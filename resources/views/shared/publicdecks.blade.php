@@ -2,6 +2,19 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 style="margin-top: 8px;">{{$public_deck_title or "Latest 10 Public Decks"}}</h3>
+            @if (Auth::user()->admin && !empty($paginate))
+                <h6 style="margin-top: 8px;">
+                    Showing results 
+                        {{ (($public_decks->currentPage()-1) * $public_decks->perPage()) + 1 }}
+                        -
+                        @if ($public_decks->perPage() == $public_decks->count())
+                            {{ $public_decks->currentPage() * $public_decks->perPage() }}
+                        @else
+                            {{ $public_decks->total() }} 
+                        @endif
+                        of {{ $public_decks->total() }}
+                </h6>
+            @endif
         </div>
         <div class="panel-body">
             @if ($public_decks->count() > 0)
@@ -27,4 +40,7 @@
             @endif
         </div>
     </div>
+    @if (!empty($paginate))
+        {{ $public_decks->links() }}
+    @endif;
 @endif

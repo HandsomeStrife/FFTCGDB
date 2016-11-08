@@ -47,7 +47,7 @@ class DeckController extends Controller
                                ->whereNull('deleted_at')
                                ->orderBy('created_at', 'DESC')
                                ->paginate(15);
-        return view('decks.public', ['public_decks' => $public_decks, 'public_deck_title' => 'Public Decks']);
+        return view('decks.public', ['public_decks' => $public_decks, 'public_deck_title' => 'Public Decks', 'paginate' => true]);
     }
 
     public function view(Request $request, $deck_id)
