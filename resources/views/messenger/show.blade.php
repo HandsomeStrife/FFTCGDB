@@ -3,7 +3,18 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Messages</h4>
+                </div>
+                <div class="list-group">
+                    <a href="/messages" class="list-group-item">Inbox</a>
+                    <a href="/messages/create" class="list-group-item">Compose</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading"><h3>{{ $thread->subject }}</h3></div>
                 <div class="panel-body">
