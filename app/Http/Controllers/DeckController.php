@@ -72,6 +72,9 @@ class DeckController extends Controller
     {
         $deck = $this->fetchDeck($deck_id);
         $deck->delete();
+
+        flash("Deleted deck", 'success');
+
         return redirect()->action('DeckController@index');
     }
 
@@ -98,6 +101,12 @@ class DeckController extends Controller
                     'count' => $count
                 ]);
             }
+        }
+
+        if ($deck_id) {
+            flash("Created new deck!", 'success');
+        } else {
+            flash("Updated deck!", 'success');
         }
 
         return redirect()->action('DeckController@index');

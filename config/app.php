@@ -177,6 +177,10 @@ return [
         // FFTCG\Providers\BroadcastServiceProvider::class,
         FFTCG\Providers\EventServiceProvider::class,
         FFTCG\Providers\RouteServiceProvider::class,
+        Webpatser\Countries\CountriesServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Cmgmyr\Messenger\MessengerServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class
 
     ],
 
@@ -225,7 +229,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Countries' => Webpatser\Countries\CountriesFacade::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

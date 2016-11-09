@@ -12,6 +12,7 @@ class Deck extends Model
 
     protected $_cards = false;
     protected $_author = false;
+    protected $_element_stats = false;
 
     protected $dates = ['deleted_at'];
 
@@ -66,5 +67,42 @@ class Deck extends Model
             return false;
         }
         return true;
+    }
+
+    public function snippet()
+    {
+        $t = implode(' ', array_slice(explode(' ', $this->description), 0, 30));
+        if (strlen($t) < strlen($this->description)) {
+            $t .= "...";
+        }
+        return $t;
+    }
+
+    public function elementStats()
+    {
+        if (empty($this->_element_stats)) {
+            $el = array();
+            $cards = $this->cards();
+            // First get the element count for the cards
+            foreach ($cards as $c) {
+                if (!isset($el[$c->element])) {
+                    $el[$c->element] = 0;
+                }
+                $el[$c->element] += $c->count;
+            }
+            // Now work out the % of each occurance
+            $count = $this->cardcount();
+            foreach ($el as $k => $v) {
+                $el[$k] = array(
+                    'percentage' => ($v / $count) * 100,
+                    'count' => $v
+                );
+            }
+            uasort($el, function ($a, $b) {
+                return ($a['count'] < $b['count']);
+            });
+            $this->_element_stats = $el;
+        }
+        return $this->_element_stats;
     }
 }

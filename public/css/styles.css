@@ -244,6 +244,97 @@ h4 span.edit {
     right: 30px;
 }
 
+.deck-card-layout {
+    border: 1px solid #BCBCBC;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+    height: 250px;
+    position: relative;
+}
+.deck-card-layout h4 {
+    margin: 0 0 5px 0;
+}
+
+.percentage-bar {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: 5px;
+    height: 10px;    
+}
+.percentage-bar span {
+    height: 10px;
+    display: inline-block;
+    margin: 0;
+    border: 1px solid #BCBCBC;
+    border-left: none;
+}
+.percentage-bar span:first-child {
+    border-left: 1px solid #BCBCBC;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+}
+.percentage-bar span:last-child {
+    -webkit-border-bottom-right-radius: 10px;
+    -moz-border-radius-bottomright: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.fire-percentage-bar {
+    background: #f44242;
+}
+.ice-percentage-bar {
+    background: #bffff4;
+}
+.wind-percentage-bar {
+    background: #6dc47d;
+}
+.earth-percentage-bar {
+    background: #e8c56f;   
+}
+.lightning-percentage-bar {
+    background: #c149e5;   
+}
+.water-percentage-bar {
+    background: #4949e5;
+}
+.light-percentage-bar {
+    background: #efeec9;
+}
+.dark-percentage-bar {
+    background: #565653   
+}
+
+.private-message {
+    margin-bottom: 30px;
+}
+.private-message .private-message-avatar {
+    text-align: center;
+    padding: 0px 10px;
+    vertical-align: top;
+    width: 74px;
+}
+.private-message .private-message-body {
+    padding: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: #bddbed;
+    color: #333333;
+    border: 1px solid #CCC;
+}
+.private-message.author .private-message-body {
+    background: #326684;
+    color: #FFFFFF;
+}
+.private-message.author .private-message-body .text-muted {
+    color: #CFCFCF;
+}
+
 .footer-text {
     text-align: center;
     font-size: 11px;

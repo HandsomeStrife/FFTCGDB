@@ -13,7 +13,7 @@
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/fonts.css" rel="stylesheet">
-    <link href="/css/styles.css?v=4" rel="stylesheet">
+    <link href="/css/styles.css?v=6" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
 
@@ -71,10 +71,12 @@
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->name }} @include('messenger.unread-count') <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{{ url('/profile') }}">Profile</a></li>
+                                    <li><a href="{{ url('/messages') }}">Messages</a></li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
@@ -94,6 +96,10 @@
             </div>
         </nav>
 
+        <div class='container'>
+            @include('flash::message')
+        </div>
+
         @yield('content')
     </div>
 
@@ -102,6 +108,10 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    
     <script src="//npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
     <script src="//unpkg.com/isotope-layout@3.0/dist/isotope.pkgd.min.js"></script>
     <script src="/js/jquery-canvas-sparkles.min.js"></script>
@@ -120,6 +130,7 @@
                     $container.addClass('loaded');
                 }
             });
+            $('.js-select2').select2();
         });
     </script>
     <script>

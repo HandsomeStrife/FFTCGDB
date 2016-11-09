@@ -5,11 +5,14 @@ namespace FFTCG;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Validator;
+use Cmgmyr\Messenger\Traits\Messagable;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use SoftDeletes;
+    use Messagable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'email', 'password',
+        'name', 'username', 'country_id', 'email', 'password',
     ];
 
     /**
@@ -37,5 +40,15 @@ class User extends Authenticatable
                     ->where('collections.user_id', $this->id)
                     ->orderBy('cards.id', 'ASC')
                     ->get();
+    }
+
+    public function rules()
+    {
+        return [
+            'name' => 'required|max:255',
+            'username' => 'sometimes|max:20|unique:users,username,' . $this->id,
+            'email' => 'required|email|max:255|unique:users,email,' . $this->id,
+            'password' => 'sometimes|min:6|confirmed',
+        ];
     }
 }

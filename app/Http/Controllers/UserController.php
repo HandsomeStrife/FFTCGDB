@@ -10,9 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Webpatser\Countries\Countries;
 
 class UserController extends Controller
 {
+
+    protected $redirectTo = '/profile';
+
     /**
      * Create a new controller instance.
      *
@@ -23,20 +27,26 @@ class UserController extends Controller
         // $this->middleware('auth');
     }
 
-    public function profile(Request $request, $username)
+    public function profile()
     {
-        if (empty($username)) {
-            return redirect()->action('HomeController@index');
-        }
+        $this->middleware('auth');
+        return view('user.profile', ['user' => Auth::user(), 'countries' => Countries::all()]);
+    }
 
-        $user = User::where('username', $username)->firstOrFail();
-        if (!$user) {
-            return redirect()->action('HomeController@index');
-        }
+    public function updateProfile(Request $request)
+    {
+        $this->middleware('auth');
 
-        $decks = Deck::where('user_id', $user->id)->where('public', true)->orderBy('created_at', 'DESC')->get();
+        $user = Auth::user();
+        $this->validate($request, $user->rules());
+        
+        $user->fill($request->all());
+        $user->password = bcrypt($user->password);
+        $user->save();
 
-        return view('userprofile', ['cards' => $user->collection(), 'user' => $user, 'decks' => $decks]);
+        flash("Updated your profile", 'success');
+        
+        return redirect()->action('UserController@profile');
     }
 
     public function publicProfile(Request $request, $username)
