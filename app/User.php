@@ -34,12 +34,38 @@ class User extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
+    protected $collection = false;
+
     public function collection()
     {
-        return Card::join('collections', 'cards.id', '=', 'collections.card_id')
-                    ->where('collections.user_id', $this->id)
-                    ->orderBy('cards.id', 'ASC')
-                    ->get();
+        if (!$this->collection) {
+            $this->collection = Card::join('collections', 'cards.id', '=', 'collections.card_id')
+                                        ->where('collections.user_id', $this->id)
+                                        ->orderBy('cards.id', 'ASC')
+                                        ->get();
+        }
+        return $this->collection;
+    }
+
+    public function collected()
+    {
+        return $this->collection()->filter(function ($c) {
+            return ($c->count > 0 || $c->foil_count > 0);
+        });
+    }
+
+    public function fortrade()
+    {
+        return $this->collection()->filter(function ($c) {
+            return ($c->trade_count > 0 || $c->foil_trade_count > 0);
+        });
+    }
+
+    public function wanted()
+    {
+        return $this->collection()->filter(function ($c) {
+            return ($c->wanted > 0 || $c->foil_wanted > 0);
+        });
     }
 
     public function rules()
@@ -50,5 +76,25 @@ class User extends Authenticatable
             'email' => 'required|email|max:255|unique:users,email,' . $this->id,
             'password' => 'sometimes|min:6|confirmed',
         ];
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('FFTCG\Models\DeckComment');
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany('FFTCG\Deck', 'deck_likes');
+    }
+
+    public function cardComments()
+    {
+        return $this->hasMany('FFTCG\Models\CardComment');
+    }
+
+    public function cardLikes()
+    {
+        return $this->belongsToMany('FFTCG\Card', 'card_likes');
     }
 }

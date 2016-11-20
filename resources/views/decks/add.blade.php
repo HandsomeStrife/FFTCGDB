@@ -48,11 +48,12 @@
                                 <div class='js-forward'>
                                     <div class='title'><strong>Forwards (<span>0</span>)</strong></div>
                                     <ul class='card-list'>
-                                        @foreach ($selectedcards as $card)
+                                        @foreach ($deck->cards as $card)
                                             @if ($card->type == 'forward')
-                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->count }}"/>
-                                                <li class="js-card-{{ $card->id }}">
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->count }}</span>)
+                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
+                                                <li class="js-card-{{ $card->id }} img-instead">
+                                                    <img src="/img/icons/{{ $card->element }}.png"/>
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -61,11 +62,12 @@
                                 <div class='js-backup'>
                                     <div class='title'><strong>Backups (<span>0</span>)</strong></div>
                                     <ul class='card-list'>
-                                        @foreach ($selectedcards as $card)
+                                        @foreach ($deck->cards as $card)
                                             @if ($card->type == 'backup')
-                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->count }}"/>
-                                                <li class="js-card-{{ $card->id }}">
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->count }}</span>)
+                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
+                                                <li class="js-card-{{ $card->id }} img-instead">
+                                                    <img src="/img/icons/{{ $card->element }}.png"/>
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -74,11 +76,12 @@
                                 <div class='js-summon'>
                                     <div class='title'><strong>Summons (<span>0</span>)</strong></div>
                                     <ul class='card-list'>
-                                        @foreach ($selectedcards as $card)
+                                        @foreach ($deck->cards as $card)
                                             @if ($card->type == 'summon')
-                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->count }}"/>
-                                                <li class="js-card-{{ $card->id }}">
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->count }}</span>)
+                                                <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
+                                                <li class="js-card-{{ $card->id }} img-instead">
+                                                    <img src="/img/icons/{{ $card->element }}.png"/>
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -97,7 +100,7 @@
                         </div>
                         <div class="panel-body isotope">
                             @forelse ($allcards as $card)
-                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}">
+                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-element="{{ $card->element }}">
                                     <div class='card-image'>
                                         <img class="lazy img" data-original="/img/cards/100x140/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                         <div class='actions'>
@@ -124,7 +127,7 @@
                                             </a>
 
                                         </div>
-                                        <div class='card-count'>@if (isset($selectedcards[$card->id])) {{ $selectedcards[$card->id]->count }} @else 0 @endif</div>
+                                        <div class='card-count'>@if ($deck->cards->contains('id', $card->id)) {{ $selected_cards[$card->id]->pivot->count }} @else 0 @endif</div>
                                     </div>
                                     <div class='card-number'>1-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
                                 </div>
@@ -133,7 +136,9 @@
                                 <script id="js-template" type="text/plain">
                                     <input class="js-card-%card_id%" type="hidden" name="card[%card_id%]" value="%count%"/>
                                     <li class="js-card-%card_id%">
-                                        <a class='js-view-full' href="/img/cards/original/%card_number%.png">%title%</a> (<span>%count%</span>)</li>
+                                        <img src="/img/icons/%element%.png"/>
+                                        <a class='js-view-full' href="/img/cards/original/%card_number%.png">%title%</a> (<span>%count%</span>)
+                                    </li>
                                 </script>
                                 <script type="text/javascript">
                                     $(document).ready(function() {
@@ -177,6 +182,7 @@
                                                 var content = $template.html();
                                                 content = content.replace(/%card_id%/g, card_id)
                                                                 .replace(/%count%/g, count)
+                                                                .replace(/%element%/g, $card.attr('data-element'))
                                                                 .replace(/%card_number%/g, $card.attr('data-number'))
                                                                 .replace(/%title%/g, $card.attr('data-title'));
                                                 $container.append(content);

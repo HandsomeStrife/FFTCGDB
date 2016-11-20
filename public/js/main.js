@@ -1,4 +1,80 @@
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+function attachCardHover()
+{
+    $('.js-hover-info').not('.hvr-attached').each(function(i, o) {
+        $(o).qtip({
+            content: {
+                title: function() {
+                    var img = '<img class="small-icon" src="/img/icons/'+ $(o).attr('data-element') +'.png"/>';
+                    return "[" + $(o).attr('data-cost') + "] " + img + " " + $(o).attr('data-title') + " (" + $(o).attr('data-number') + ")";
+                },
+                text: function(event, api) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/card/description',
+                        dataType: 'html',
+                        data: { card_id: $(o).attr('data-id') }
+                    })
+                    .then(function(content) {
+                        // Set the tooltip content upon successful retrieval
+                        api.set('content.text', content);
+                    }, function(xhr, status, error) {
+                        // Upon failure... set the tooltip content to the status and error value
+                        api.set('content.text', status + ': ' + error);
+                    });
+                    return 'Loading...'; // Set some initial text
+                }
+            },
+            style: {
+                classes: 'qtip-bootstrap qtip-nrdb'
+            },
+            position: {
+                my: 'left center',
+                at: 'right center'
+            }
+        });
+    }).addClass('hvr-attached');
+}
+
+/**
+* Tooltips
+*/
+function attachTooltips()
+{
+    $("[title]").not('.tooltips-attached').hover(function() {
+        // Get and remove the title, it its not empty
+        var title = $(this).attr('title');
+        if (!$.trim(title)) {
+            return;
+        }
+        $(this).attr('data-title', title).removeAttr('title');
+        // Add the new element
+        $('<p class="tooltip-hover"></p>').text(title).appendTo('body').fadeIn();
+    }, function() {
+        $(this).attr('title', $(this).attr('data-title'));
+        $('.tooltip-hover').remove();
+    }).mousemove(function(e) {
+        var mousex = e.pageX + 5; //Get X coordinates
+        var mousey = e.pageY + 5; //Get Y coordinates
+        $('.tooltip-hover').css({ top: mousey, left: mousex });
+    }).addClass('tooltips-attached');
+}
+
 $(document).ready(function() {
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     /**
      * Foil sparkle effects
      *
@@ -95,24 +171,34 @@ $(document).ready(function() {
         type: 'image'
     }).addClass('view-full-attached');
 
-    /**
-     * Tooltips
-     */
-    $("[title]").hover(function() {
-        // Get and remove the title, it its not empty
-        var title = $(this).attr('title');
-        if (!$.trim(title)) {
-            return;
+    attachTooltips();
+    attachCardHover();
+
+    $("img.lazy").lazyload({
+        threshold : 200,
+        effect : "fadeIn"
+    }).on('load', function() {
+        var $container = $(this).parents('.card-image');
+        if ($container) {
+            $container.addClass('loaded');
         }
-        $(this).attr('data-title', title).removeAttr('title');
-        // Add the new element
-        $('<p class="tooltip-hover"></p>').text(title).appendTo('body').fadeIn();
-    }, function() {
-        $(this).attr('title', $(this).attr('data-title'));
-        $('.tooltip-hover').remove();
-    }).mousemove(function(e) {
-        var mousex = e.pageX + 5; //Get X coordinates
-        var mousey = e.pageY + 5; //Get Y coordinates
-        $('.tooltip-hover').css({ top: mousey, left: mousex });
     });
+    
+    $('.js-select2').select2({
+        templateResult: formatSelect2Options,
+        templateSelection: formatSelect2Options
+    });
+
+    function formatSelect2Options(res)
+    {
+        var img = $(res.element).attr('data-image');
+        if (img) {
+            return $('<span><img src="' + img + '"/> ' + res.text + '</span>');
+        }
+        return res.text;
+    }
+
+    setTimeout(function() {
+        $('.hoverZoomLink').removeClass('hoverZoomLink');
+    }, 800);
 });

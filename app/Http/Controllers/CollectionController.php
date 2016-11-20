@@ -33,82 +33,40 @@ class CollectionController extends Controller
         View::share('cards', $cards);
         $collected = Collection::where('user_id', Auth::user()->id)->get()->keyBy('card_id');
         View::share('collected', $collected);
-        return view('collection.index');
+        return view('collection.indexalt');
     }
 
-    public function edit(Request $request, $card_id)
-    {
-        $card = Card::findOrFail($card_id);
-        if ($card) {
-            View::share('card', $card);
-        }
-        return view('editcard');
-    }
-
-    public function processEdit(Request $request, $card_id)
-    {
-        $card = Card::findOrFail($card_id);
-        $card->fill($request->all())->save();
-        return redirect()->back();
-    }
-
-    /**
-     * Adds a card to a users collection
-     *
-     */
     public function update(Request $request)
     {
         $user_id = Auth::user()->id;
-        $card_id = $request->input('card_id');
-        $type = $request->input('type');
-        
-        $existing = Collection::where('user_id', $user_id)->where('card_id', $card_id)->first();
-        if ($type == 'add' && !$existing) {
-            // They are adding a new card to their collection!
-            $id = Collection::create([
-                'user_id' => $user_id,
-                'card_id' => $card_id,
-                'count' => 1
-            ]);
-            return response()->json(['response' => 'Successfully added']);
-        } elseif ($type == 'add' && $existing) {
-            $existing->count++;
-            $existing->save();
-        } elseif ($type == 'remove' && $existing) {
-            if ($existing->count > 1) {
-                $existing->count--;
-                $existing->save();
-            } else {
-                $existing->delete();
+        $existing = Collection::where('user_id', $user_id)->get();
+        $cards = $request->input('card');
+        foreach ($cards as $card_id => $c) {
+            $e = $existing->filter(function ($item) use ($card_id) {
+                return ($item->card_id == $card_id);
+            })->first();
+            if (!$e) {
+                $e = Collection::create([
+                    'user_id' => $user_id,
+                    'card_id' => $card_id,
+                ]);
             }
+            // Collection
+            $e->count = (empty($c['count'])) ? 0 : $c['count'];
+            $e->foil_count = (empty($c['foil_count'])) ? 0 : $c['foil_count'];
+            // Trade
+            $e->trade_count = (empty($c['trade_count'])) ? 0 : $c['trade_count'];
+            $e->foil_trade_count = (empty($c['foil_trade_count'])) ? 0 : $c['foil_trade_count'];
+            // Wanted
+            $e->wanted = (empty($c['wanted'])) ? 0 : $c['wanted'];
+            $e->foil_wanted = (empty($c['foil_wanted'])) ? 0 : $c['foil_wanted'];
+
+            $e->save();
         }
-    }
 
-    public function markFoil(Request $request)
-    {
-        $user_id = Auth::user()->id;
-        $card_id = $request->input('card_id');
-        $type = $request->input('type');
-
-        $existing = Collection::where('user_id', $user_id)->where('card_id', $card_id)->first();
-        if ($type == 'add' && !$existing) {
-            $id = Collection::create([
-                'user_id' => $user_id,
-                'card_id' => $card_id,
-                'count' => 1,
-                'foil' => true
-            ]);
-        } elseif ($type == 'add' && !$existing->foil) {
-            $existing->foil = true;
-            $existing->save();
-        } elseif ($type == 'remove') {
-            $existing->foil = false;
-            $existing->count--;
-            if ($existing->count == 0) {
-                $existing->delete();
-            } else {
-                $existing->save();
-            }
+        if (!$request->ajax()) {
+            flash("Updated your collection!");
+            return redirect()->action('CollectionController@index');
         }
     }
 }

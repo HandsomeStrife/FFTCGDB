@@ -3,8 +3,13 @@
 namespace FFTCG\Exceptions;
 
 use Exception;
+use FFTCG\Mail\Error as ErrorMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -32,6 +37,18 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($this->shouldReport($exception) && (!Auth::check() || !Auth::user()->admin)) {
+            if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
+                $page = $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $content = response()->view('errors.email.adminmissing', ['content' => $page]);
+            } else {
+                $content = ExceptionHandler::toIlluminateResponse(ExceptionHandler::convertExceptionToResponse($exception), $exception);
+                // $content .= $exception->getMessage();
+                // $content .= nl2br($exception->getTraceAsString());
+            }
+            Mail::send(new ErrorMail($content));
+        }
+
         parent::report($exception);
     }
 
@@ -44,7 +61,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if (Auth::check() && Auth::user()->admin) {
+            return parent::render($request, $exception);
+        }
+
+        if ($exception instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
+        }
+
+        // 404 check
+        if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
+            return response()->view('errors.404', [], 404);
+        }
+        
+        return response()->view('errors.public', [], 500);
     }
 
     /**

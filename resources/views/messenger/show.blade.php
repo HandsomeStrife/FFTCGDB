@@ -32,7 +32,7 @@
                             @endif
                             <td>
                                 <div class="private-message-body">
-                                    <p>{{ $message->body }}</p>
+                                    <p>{!! nl2br(e($message->body)) !!}</p>
                                     <div class="text-muted"><small>Posted {{ $message->created_at->diffForHumans() }}</small></div>
                                 </div>
                             </td>
@@ -69,4 +69,4 @@
         </div>
     </div>
 </div>
-@stop
+@endsection

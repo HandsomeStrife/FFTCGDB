@@ -14,17 +14,16 @@
 Auth::routes();
 
 // Admin card editing
-Route::get('/card/edit/{card_id}', 'HomeController@edit');
-Route::post('/card/edit/{card_id}', 'HomeController@processEdit');
+Route::get('/card/edit/{card_id}', 'CardController@edit')->middleware('auth');
+Route::post('/card/edit/{card_id}', 'CardController@processEdit')->middleware('auth');
 
 // Collections
-Route::get('/collection', 'CollectionController@index');
-Route::post('/collection/markfoil', 'CollectionController@markFoil');
-Route::post('/collection/update', 'CollectionController@update');
+Route::get('/collection', 'CollectionController@index')->middleware('auth');
+Route::post('/collection', 'CollectionController@update')->middleware('auth');
 
 // Profile updating
-Route::get('/profile', 'UserController@profile');
-Route::post('/profile', 'UserController@updateProfile');
+Route::get('/profile', 'UserController@profile')->middleware('auth');
+Route::post('/profile', 'UserController@updateProfile')->middleware('auth');
 
 // Messaging
 Route::group(['prefix' => 'messages'], function () {
@@ -35,15 +34,31 @@ Route::group(['prefix' => 'messages'], function () {
     Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
 });
 
-// Deckbuilding
-Route::post('/decks/{deck_id}/edit', 'DeckController@processEdit');
-Route::post('/decks/{deck_id}/delete', 'DeckController@processDelete');
-Route::get('/decks/{deck_id}/edit', 'DeckController@edit');
-Route::get('/decks/public', 'DeckController@publicDecks');
-Route::get('/decks', 'DeckController@index');
+// Cards
+Route::post('/card/like', 'CardController@likeToggle');
+Route::post('/card/description', 'DeckController@getCardDescription');
+Route::get('/card/{card_id}', 'CardController@view');
 
-// Public deck view
-Route::get('/d/{deck_id}', 'DeckController@view');
+// Searching
+Route::get('/search', 'SearchController@index');
+Route::post('/search', 'SearchController@search');
+Route::post('/json', 'SearchController@json');
+
+// Deckbuilding
+$decks = function () {
+    Route::post('/like', 'DeckController@likeToggle');
+    Route::post('/{deck_id}/comment', 'DeckController@addComment');
+    Route::post('/u/{deck_id}/edit', 'DeckController@processEdit')->middleware('auth');
+    Route::post('/u/{deck_id}/delete', 'DeckController@processDelete')->middleware('auth');
+    Route::post('/', 'DeckController@search');
+    
+    Route::get('/u/{deck_id}/edit', 'DeckController@edit')->middleware('auth');
+    Route::get('/u', 'DeckController@index')->middleware('auth');
+    Route::get('/{deck_id}', 'DeckController@view');
+    Route::get('/', 'DeckController@search');
+};
+Route::group(['prefix' => 'decks'], $decks);
+Route::group(['prefix' => 'd'], $decks);
 
 // Public profile
 Route::get('/u/{username}', 'UserController@publicProfile');

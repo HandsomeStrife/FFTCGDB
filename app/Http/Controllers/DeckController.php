@@ -7,7 +7,9 @@ use FFTCG\Card;
 use FFTCG\Deck;
 use FFTCG\DeckCard;
 use FFTCG\Collection;
+use FFTCG\Mail\Commented;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -26,19 +28,12 @@ class DeckController extends Controller
 
     public function index()
     {
-        $this->middleware('auth');
         // Load up the users decks
         $decks = Deck::where('user_id', Auth::user()->id)
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'DESC')
                         ->get();
-        // Load up the latest public decks
-        $public_decks = Deck::where('public', true)
-                               ->whereNull('deleted_at')
-                               ->orderBy('created_at', 'DESC')
-                               ->limit(10)
-                               ->get();
-        return view('decks.index', ['decks' => $decks, 'public_decks' => $public_decks]);
+        return view('decks.index', ['decks' => $decks]);
     }
 
     public function publicDecks()
@@ -50,22 +45,68 @@ class DeckController extends Controller
         return view('decks.public', ['public_decks' => $public_decks, 'public_deck_title' => 'Public Decks', 'paginate' => true]);
     }
 
+    public function search(Request $request)
+    {
+        if ($request->isMethod('post')) {
+
+            $decks = Deck::where('public', true)
+                           ->withCount('comments')
+                           ->withCount('likes')
+                           ->whereNull('deleted_at');
+
+            if (!empty($request->keywords)) {
+                $keywords = $request->keywords;
+                $decks->where(function ($query) use ($keywords) {
+                    $query->orWhere('name', 'LIKE', "%{$keywords}%")
+                          ->orWhere('description', 'LIKE', "%{$keywords}%");
+                });
+            }
+
+            foreach ($request->elements as $el) {
+                $decks->whereHas('cards', function ($query) use ($el) {
+                    $query->where('element', '=', $el);
+                });
+            }
+            foreach ($request->cards as $cid) {
+                $decks->whereHas('cards', function ($query) use ($cid) {
+                    $query->where('id', '=', $cid);
+                });
+            }
+
+            switch ($request->order) {
+                case 'comments':
+                    $decks->orderBy('comments_count', 'DESC');
+                    break;
+                case 'likes':
+                    $decks->orderBy('likes_count', 'DESC');
+                    break;
+                default:
+                    $decks->orderBy('created_at', 'DESC');
+                    break;
+            }
+
+
+            return view('decks.results', ['decks' => $decks->paginate(25)]);
+
+        } else {
+            $decks = Deck::where('public', true)->whereNull('deleted_at')->orderBy('created_at', 'DESC')->paginate(25);
+            return view('decks.search', ['cards' => Card::all(), 'decks' => $decks]);
+        }
+    }
+
     public function view(Request $request, $deck_id)
     {
-        $deck = Deck::find($deck_id);
-        $cards = $deck->cards()->keyBy('card_id');
-        $author = User::find($deck->user_id);
-        return view('decks.view', ['deck' => $deck, 'cards' => $cards, 'author' => $author]);
+        $deck = Deck::findOrFail($deck_id);
+        $author = User::findOrFail($deck->user_id);
+        return view('decks.view', ['deck' => $deck, 'author' => $author]);
     }
 
     public function edit(Request $request, $deck_id)
     {
         $deck = $this->fetchDeck($deck_id);
-
         $all_cards = Card::all();
-        $selected_cards = $deck->cards()->keyBy('card_id');
-
-        return view('decks.add', ['deck' => $deck, 'allcards' => $all_cards, 'selectedcards' => $selected_cards]);
+        $selected_cards = $deck->cards->keyBy('id');
+        return view('decks.add', ['deck' => $deck, 'allcards' => $all_cards, 'selected_cards' => $selected_cards]);
     }
 
     public function processDelete(Request $request, $deck_id)
@@ -112,9 +153,47 @@ class DeckController extends Controller
         return redirect()->action('DeckController@index');
     }
 
+    public function getCardDescription(Request $request)
+    {
+        $card = Card::find($request->input('card_id'));
+        return view('decks.description', ['card' => $card]);
+    }
+
+    public function likeToggle(Request $request)
+    {
+        $deck = Deck::find($request->input('deck_id'));
+        if ($deck && Auth::check()) {
+            $user_id = Auth::user()->id;
+            if ($deck->likes->contains($user_id)) {
+                $deck->likes()->detach($user_id);
+            } else {
+                $deck->likes()->attach($user_id);
+            }
+        }
+    }
+
+    public function addComment(Request $request, $deck_id)
+    {
+        if (Auth::check()) {
+            if (!empty($_POST['comment'])) {
+                $deck = Deck::find($deck_id);
+                $comment = $deck->comments()->create([
+                    'user_id' => Auth::user()->id,
+                    'comment' => $_POST['comment']
+                ]);
+                $comment->sendEmails();
+            } else {
+                flash("Please enter a comment", "danger");
+            }
+        }
+        return redirect()->action('DeckController@view', ['deck_id' => $deck_id]);
+    }
+
     private function fetchDeck($deck_id)
     {
-        $this->middleware('auth');
+        if (!Auth::check()) {
+            return redirect()->action('HomeController@index');
+        }
 
         if (!empty($deck_id)) {
             $deck = Deck::find($deck_id);

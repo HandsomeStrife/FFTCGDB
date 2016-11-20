@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DeckCard extends Model
 {
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-
     protected $table = 'deckcards';
 
     protected $fillable = [
