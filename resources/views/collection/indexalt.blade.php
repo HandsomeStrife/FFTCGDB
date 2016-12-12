@@ -10,12 +10,9 @@
                     <div class="panel-heading">
                         <h4 style="margin-bottom: 10px;">Your Collection</h4>
                         <p>This collection page will save automatically - however if you wish to be doubly sure, please use the "Save" button at the bottom of the page. <noscript><strong>You do not have JavaScript enabled, so please use the save button.</strong></noscript></p>
-
-                        
-
                     </div>
                     <div class="panel-body">
-                        <table class="table isortope">
+                        <table class="table isotope">
                             <thead>
                                 <tr>
                                     <th style="width: 100px">#</th>

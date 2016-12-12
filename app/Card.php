@@ -2,6 +2,7 @@
 
 namespace FFTCG;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,13 +57,13 @@ class Card extends Model
     public function hoveritem()
     {
         return "<img class='small-icon' src='/img/icons/{$this->element}.png' />
-        <a class='js-view-full js-hover-info' 
+        <a class='js-hover-info' 
             data-id='{$this->id}'
             data-element='{$this->element}'
             data-cost='{$this->cost}'
             data-number='{$this->fullCardNumber()}'
             data-title='{$this->name}'
-            href='/img/cards/original/{$this->card_number}.png'>
+            href='/card/{$this->fullCardNumber()}'>
             {$this->name}
         </a>";
     }
