@@ -36,6 +36,15 @@ class CollectionController extends Controller
         return view('collection.indexalt');
     }
 
+    public function profile()
+    {
+        $cards = Card::all();
+        View::share('cards', $cards);
+        $collected = Collection::where('user_id', Auth::user()->id)->get()->keyBy('card_id');
+        View::share('collected', $collected);
+        return view('collection.profile');
+    }
+
     public function update(Request $request)
     {
         $user_id = Auth::user()->id;
