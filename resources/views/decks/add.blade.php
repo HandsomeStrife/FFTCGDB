@@ -14,7 +14,7 @@
                 </div>
             @else
                 <div class="col-md-4">
-                    <form id="delete-deck" method="post" action="/decks/{{ $deck->id }}/delete">
+                    <form id="delete-deck" method="post" action="/decks/u/{{ $deck->id }}/delete">
                         {{ csrf_field() }}
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>

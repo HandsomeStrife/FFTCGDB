@@ -26,4 +26,9 @@ class Collection extends Model
         }
         return implode(' ', $classes);
     }
+
+    public function card()
+    {
+        return $this->belongsTo('FFTCG\Card');
+    }
 }

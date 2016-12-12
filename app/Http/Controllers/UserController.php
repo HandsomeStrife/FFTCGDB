@@ -65,6 +65,6 @@ class UserController extends Controller
                         ->where('public', true)
                         ->orderBy('created_at', 'DESC')->get();
 
-        return view('user.public', ['cards' => $user->collection(), 'user' => $user, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks']);
+        return view('user.public', ['user' => $user, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks']);
     }
 }

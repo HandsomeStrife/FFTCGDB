@@ -66,27 +66,26 @@ class User extends Authenticatable
 
     public function collection()
     {
-        return $this->hasMany('FFTCG\Collection');
+        return $this->hasMany('FFTCG\Collection')->with('card');
     }
-
 
     public function collected()
     {
-        return $this->collection()->filter(function ($c) {
+        return $this->collection->filter(function ($c) {
             return ($c->count > 0 || $c->foil_count > 0);
         });
     }
 
     public function fortrade()
     {
-        return $this->collection()->filter(function ($c) {
+        return $this->collection->filter(function ($c) {
             return ($c->trade_count > 0 || $c->foil_trade_count > 0);
         });
     }
 
     public function wanted()
     {
-        return $this->collection()->filter(function ($c) {
+        return $this->collection->filter(function ($c) {
             return ($c->wanted > 0 || $c->foil_wanted > 0);
         });
     }
