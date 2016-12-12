@@ -38,11 +38,8 @@ class CollectionController extends Controller
 
     public function profile()
     {
-        $cards = Card::all();
-        View::share('cards', $cards);
-        $collected = Collection::where('user_id', Auth::user()->id)->get()->keyBy('card_id');
-        View::share('collected', $collected);
-        return view('collection.profile');
+        $collected = Auth::user()->collection->keyBy('card_id');
+        return view('collection.profile', [ 'cards' => Card::all(), 'collected' => $collected ]);
     }
 
     public function update(Request $request)

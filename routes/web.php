@@ -18,7 +18,7 @@ Route::get('/card/edit/{card_id}', 'CardController@edit')->middleware('auth');
 Route::post('/card/edit/{card_id}', 'CardController@processEdit')->middleware('auth');
 
 // Collections
-Route::get('/collection', 'CollectionController@index')->middleware('auth');
+Route::get('/collection', 'CollectionController@profile')->middleware('auth');
 Route::post('/collection', 'CollectionController@update')->middleware('auth');
 
 // Profile updating
