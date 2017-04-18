@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /user/
+
+Sitemap: http://www.fftcgmognet.com/sitemap.xml

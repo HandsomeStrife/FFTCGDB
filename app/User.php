@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function collection()
     {
-        return $this->hasMany('FFTCG\Collection')->with('card');
+        return $this->hasMany('FFTCG\Collection')->with('card')->orderBy('card_id');
     }
 
     public function collected()

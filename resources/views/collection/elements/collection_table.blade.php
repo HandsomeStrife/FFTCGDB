@@ -40,4 +40,5 @@
             @endforeach
         </tbody>
     </table>
+    <input type="submit" class='btn btn-default' value="Save"/>
 </form>

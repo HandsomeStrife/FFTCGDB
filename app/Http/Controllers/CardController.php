@@ -22,30 +22,38 @@ class CardController extends Controller
         if (strpos($card_number, '-') > 0) {
             $parts = explode('-', $card_number);
             $search = intval($parts[1]); // to remove the 0's
+            $card = Card::where('card_number', $search)->where('set_number', $parts[0]);
         } else {
             $search = intval($card_number);
+            $card = Card::where('id', $search);
+
         }
 
-        $card = Card::where('card_number', $search)
-                        ->whereNull('deleted_at')
-                        ->firstOrFail();
+        $card = $card->whereNull('deleted_at')->firstOrFail();
 
         return view('cards.view', ['card' => $card, 'cardview' => true]);
     }
 
     public function edit(Request $request, $card_id)
     {
+        if ($card_id == 0) {
+            return view('admin.editcard');
+        }
         $card = Card::findOrFail($card_id);
         if ($card) {
             View::share('card', $card);
         }
-        return view('editcard');
+        return view('admin.editcard');
     }
 
     public function processEdit(Request $request, $card_id)
     {
         if (Auth::check()) {
-            $card = Card::findOrFail($card_id);
+            if ($card_id == 0) {
+                $card = Card::create();
+            } else {
+                $card = Card::findOrFail($card_id);
+            }
             $card->fill($request->all())->save();
         }
         return redirect()->back();

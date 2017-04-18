@@ -72,7 +72,7 @@ class CollectionController extends Controller
 
         if (!$request->ajax()) {
             flash("Updated your collection!");
-            return redirect()->action('CollectionController@index');
+            return redirect()->action('CollectionController@profile');
         }
     }
 }

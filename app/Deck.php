@@ -62,7 +62,7 @@ class Deck extends Model
         return true;
     }
 
-    public function snippet($words = 24)
+    public function formattedDescription($break = true)
     {
         $t = $this->description;
         $reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
@@ -70,7 +70,12 @@ class Deck extends Model
             // make the urls hyper links
             $t = preg_replace($reg_exUrl, "<a href='{$url[0]}'>[link]</a>", $t);
         }
+        return ($break) ? nl2br($t) : $t;
+    }
 
+    public function snippet($words = 24)
+    {
+        $t = $this->formattedDescription(false);
         $t = implode(' ', array_slice(explode(' ', $t), 0, $words));
         if (strlen($t) < strlen($this->description)) {
             $t .= "...";

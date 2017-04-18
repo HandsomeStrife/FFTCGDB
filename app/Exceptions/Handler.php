@@ -39,10 +39,11 @@ class Handler extends ExceptionHandler
     {
         if ($this->shouldReport($exception) && (!Auth::check() || !Auth::user()->admin)) {
             if ($exception instanceof ModelNotFoundException || $exception instanceof NotFoundHttpException) {
-                $page = $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $page = $actual_link = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
                 $content = response()->view('errors.email.adminmissing', ['content' => $page]);
             } else {
-                $content = ExceptionHandler::toIlluminateResponse(ExceptionHandler::convertExceptionToResponse($exception), $exception);
+                $content = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+                $content .= ExceptionHandler::toIlluminateResponse(ExceptionHandler::convertExceptionToResponse($exception), $exception);
                 // $content .= $exception->getMessage();
                 // $content .= nl2br($exception->getTraceAsString());
             }

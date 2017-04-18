@@ -4,7 +4,7 @@
 <div class="container card-view">
     <div class="row">
         <div class="col-md-5">
-            <img class='full-size' src="/img/cards/original/{{ $card->card_number }}.png" />
+            <img class='full-size' src="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png" />
         </div>
         <div class="col-md-7">
             <div class="panel panel-default">

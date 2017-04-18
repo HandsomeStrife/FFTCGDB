@@ -13,12 +13,12 @@ class Card extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name', 'cost', 'element', 'type', 'job', 'category', 'text', 'card_number', 'rarity', 'power'
+        'name', 'cost', 'element', 'type', 'job', 'category', 'text', 'card_number', 'rarity', 'power', 'set_number'
     ];
 
     public function fullCardNumber()
     {
-        return "1-" . str_pad($this->card_number, 3, 0, STR_PAD_LEFT) . "-" . $this->rarity;
+        return $this->set_number . "-" . str_pad($this->card_number, 3, 0, STR_PAD_LEFT) . "-" . $this->rarity;
     }
 
     public function formatDescription()

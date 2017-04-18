@@ -9,7 +9,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <img src="/img/cards/original/{{ $card->card_number }}.png"/>
+                            <img src="/img/cards/original/{{$card->set_number}}/{{ $card->card_number }}.png"/>
                         </div>
                         <div class="col-md-6">
                             <form method="post">
@@ -54,6 +54,10 @@
                                 <div class="form-group">
                                     <label for="text">Text</label>
                                     <textarea id="text" name="text" class="form-control">{{$card->text}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set_number">Set Number</label>
+                                    <input type="text" class="form-control" id="set_number" name="set_number" placeholder="Set Number" value="{{$card->set_number}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="card_number">Card Number</label>

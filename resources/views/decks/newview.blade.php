@@ -100,8 +100,8 @@
                             @forelse ($cards as $card)
                                 <div class='card collected element-{{ $card->element }}' data-card-id="{{ $card->id }}">
                                     <div class='card-image @if ($card->foil) has-foil @else no-foil @endif'>
-                                        <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">
-                                            <img class="lazy img" data-original="/img/cards/100x140/{{ $card->card_number }}.png" width="100" height="140" src=""/>
+                                        <a class='js-view-full' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">
+                                            <img class="lazy img" data-original="/img/cards/100x140/{{ $card->set_number }}/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                         </a>
                                         <div class='card-count'>{{ $card->count }}</div>
                                     </div>

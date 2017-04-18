@@ -23,7 +23,7 @@
                     @forelse ($cards as $card)
                         <div class='card @if (!empty($collected[$card->id])) collected @else not-collected @endif element-{{ $card->element }}' data-card-id="{{ $card->id }}">
                             <div class='card-image @if (!empty($collected[$card->id]) && $collected[$card->id]->foil) has-foil @else no-foil @endif'>
-                                <img class="lazy img" data-original="/img/cards/100x140/{{ $card->card_number }}.png" width="100" height="140" src=""/>
+                                <img class="lazy img" data-original="/img/cards/100x140/{{ $card->set_number }}/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                 <div class='actions'>
                                     
                                     <a class='js-add-card add-card-button' href="#">
@@ -33,7 +33,7 @@
                                         </span>
                                     </a>
 
-                                    <a class='js-view-full view-full-button' href="/img/cards/original/{{ $card->card_number }}.png">
+                                    <a class='js-view-full view-full-button' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">
                                         <span class="fa-stack fa-lg">
                                             <i class="fa fa-circle fa-stack-2x"></i>
                                             <i class="fa fa-eye fa-stack-1x fa-inverse"></i>

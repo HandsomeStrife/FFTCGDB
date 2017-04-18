@@ -12,19 +12,12 @@
                     </div>
                 @else
                     <div class="panel-heading">
-                        <h4>Competition Time!</h4>
+                        <h4>An Update!</h4>
                     </div>
                     <div class="panel-body">
-                        <p>Happy holidays!</p>
-                        <p>The winners of the competition were picked on the 10th of December, and they are as follows:</p>
-                        <ul>
-                            <li>In first place is Rednaxel, for their deck '<a href="http://fftcgdb.com/d/481">Blazing Tornado</a>'</li>
-                            <li>In second place is Riothebeast, for their deck '<a href="http://fftcgdb.com/d/225">golbez takes the stage</a>'</li>
-                            <li>In third place is Seagullfeeder, for their deck '<a href="http://fftcgdb.com/d/193">Golbez</a>'</li>
-                        </ul>
-                        <p>I'll be in touch with you all individually to arrange delivery of your prizes, congratulations guys! I hope to run a new competition in the new year, perhaps on a different merit.</p>
-                        <p>Apologies for the lack of communication and updates on the site, I've been really busy of late, but I hope to implement some new features over the holidays.</p>
-                        <p>If you have any feedback or comments on the site, please send me a direct message on here, or get in touch with me on my twitter account <a href="//twitter.com/thedanives">@thedanives</a>. New features will be coming very soon, including card comments, email alerts and trade tracking!</p>
+                        <p>It's been a while since I've updated the site - apologies on that. Day job and other commitments have kept me busy. As such, updates aren't coming to the site as frequently as I'd like, but I have a few in the pipeline.</p>
+                        <p>For now, I've managed to upload all of Opus 2, along with the promo cards, as people have requested.</p>
+                        <p>If you have any feedback or comments on the site, please send me a direct message on here, or get in touch with me on my twitter account <a href="//twitter.com/thedanives">@thedanives</a>.</p>
                     </div>
                 @endif
             </div>

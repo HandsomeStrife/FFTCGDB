@@ -53,7 +53,7 @@
                                                 <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
                                                 <li class="js-card-{{ $card->id }} img-instead">
                                                     <img src="/img/icons/{{ $card->element }}.png"/>
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -67,7 +67,7 @@
                                                 <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
                                                 <li class="js-card-{{ $card->id }} img-instead">
                                                     <img src="/img/icons/{{ $card->element }}.png"/>
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -81,7 +81,7 @@
                                                 <input class="js-card-{{ $card->id }}" type="hidden" name="card[{{ $card->id }}]" value="{{ $card->pivot->count }}"/>
                                                 <li class="js-card-{{ $card->id }} img-instead">
                                                     <img src="/img/icons/{{ $card->element }}.png"/>
-                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
+                                                    <a class='js-view-full' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">{{ $card->name }}</a> (<span>{{ $card->pivot->count }}</span>)
                                                 </li>
                                             @endif
                                         @endforeach
@@ -100,9 +100,9 @@
                         </div>
                         <div class="panel-body isotope">
                             @forelse ($allcards as $card)
-                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-element="{{ $card->element }}">
+                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-set-number="{{ $card->set_number }}" data-element="{{ $card->element }}">
                                     <div class='card-image'>
-                                        <img class="lazy img" data-original="/img/cards/100x140/{{ $card->card_number }}.png" width="100" height="140" src=""/>
+                                        <img class="lazy img" data-original="/img/cards/100x140/{{ $card->set_number }}/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                         <div class='actions'>
                                             
                                             <a class='js-add-card add-card-button' href="#">
@@ -112,7 +112,7 @@
                                                 </span>
                                             </a>
 
-                                            <a class='js-view-full view-full-button' href="/img/cards/original/{{ $card->card_number }}.png">
+                                            <a class='js-view-full view-full-button' href="/img/cards/original/{{ $card->set_number }}/{{ $card->card_number }}.png">
                                                 <span class="fa-stack fa-lg">
                                                     <i class="fa fa-circle fa-stack-2x"></i>
                                                     <i class="fa fa-eye fa-stack-1x fa-inverse"></i>
@@ -137,7 +137,7 @@
                                     <input class="js-card-%card_id%" type="hidden" name="card[%card_id%]" value="%count%"/>
                                     <li class="js-card-%card_id%">
                                         <img src="/img/icons/%element%.png"/>
-                                        <a class='js-view-full' href="/img/cards/original/%card_number%.png">%title%</a> (<span>%count%</span>)
+                                        <a class='js-view-full' href="/img/cards/original/%set_number%/%card_number%.png">%title%</a> (<span>%count%</span>)
                                     </li>
                                 </script>
                                 <script type="text/javascript">
@@ -183,6 +183,7 @@
                                                 content = content.replace(/%card_id%/g, card_id)
                                                                 .replace(/%count%/g, count)
                                                                 .replace(/%element%/g, $card.attr('data-element'))
+                                                                .replace(/%set_number%/g, $card.attr('data-set-number'))
                                                                 .replace(/%card_number%/g, $card.attr('data-number'))
                                                                 .replace(/%title%/g, $card.attr('data-title'));
                                                 $container.append(content);

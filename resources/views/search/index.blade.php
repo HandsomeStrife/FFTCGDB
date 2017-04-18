@@ -188,7 +188,7 @@
         data-title="%name%" 
         target="_blank" 
         href="/card/%full_number%">
-            <img src="/img/cards/100x140/%number%.png">
+            <img src="/img/cards/100x140/%set_number%/%number%.png">
     </a>
 </script>
 <script type="text/javascript">
@@ -237,8 +237,9 @@
                                         .replace(/%id%/g, o.id)
                                         .replace(/%element%/g, o.element)
                                         .replace(/%cost%/g, o.cost)
-                                        .replace(/%full_number%/g, "1-" + (('000'+o.card_number).substring(o.card_number.length)) + '-' + o.rarity)
+                                        .replace(/%full_number%/g, o.set_number + "-" + (('000'+o.card_number).substring(o.card_number.length)) + '-' + o.rarity)
                                         .replace(/%name%/g, o.name)
+                                        .replace(/%set_number%/g, o.set_number)
                                         .replace(/%number%/g, o.card_number);
                         $wrap.append(html);
                         $items.push($wrap[0]);
