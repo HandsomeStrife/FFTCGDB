@@ -30,7 +30,7 @@
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/fonts.css" rel="stylesheet">
-    <link href="/css/styles.css?v=20" rel="stylesheet">
+    <link href="/css/styles.css?v=22" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"  rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
 

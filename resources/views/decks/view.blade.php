@@ -189,7 +189,7 @@
                             if (!card.name) {
                                 return 'Start typing the card name';
                             }
-                            return "<img height='40' src='/img/cards/100x140/" + card.card_number + ".png'/> " + card.name + " " + generateCardNumber(card);
+                            return "<img height='40' src='/img/cards/100x140/" + card.set_number + "/" + card.card_number + ".png'/> " + card.name + " " + generateCardNumber(card);
                         },
                         replace: function (card) {
                             return "(" + card.name + ") " + generateCardNumber(card);
@@ -197,7 +197,7 @@
                     }]);
 
                     function generateCardNumber(card) {
-                        return "[1-" + ('000' + card.card_number).substring(card.card_number.length) + "-" + card.rarity + "]";
+                        return "[" + card.set_number + "-" + ('000' + card.card_number).substring(card.card_number.length) + "-" + card.rarity + "]";
                     }
 
                 @endif

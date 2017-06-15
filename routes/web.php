@@ -13,6 +13,10 @@
 
 Auth::routes();
 
+Route::get('/blog', 'BlogController@index');
+Route::get('/blog/new', 'BlogController@create')->middleware('auth');
+Route::post('/blog/new', 'BlogController@update')->middleware('auth');
+
 // Admin card editing
 Route::get('/card/edit/{card_id}', 'CardController@edit')->middleware('auth');
 Route::post('/card/edit/{card_id}', 'CardController@processEdit')->middleware('auth');

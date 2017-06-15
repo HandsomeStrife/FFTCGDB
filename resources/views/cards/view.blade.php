@@ -11,6 +11,11 @@
                 <div class="panel-heading">
                     <h4>{{ $card->name }}
                         <div class='like-button js-like'><i class="fa @if (Auth::check() && $card->likes->contains(Auth::user()->id)) fa-heart @else fa-heart-o @endif" aria-hidden="true"></i> <span>{{ $card->likes->count() }}</span></div>
+                        @if (Auth::user() && Auth::user()->admin)
+                            <a href="/card/edit/{{ $card->id }}" class='edit-card'>
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        @endif
                     </h4>
                 </div>
                 <div class="panel-body">

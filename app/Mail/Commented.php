@@ -25,7 +25,11 @@ class Commented extends Mailable
         $this->type = $type;
         $this->content = $comment->comment;
         $this->author = $comment->user->name;
-        $this->url = 'http://fftcgdb.com/d/' . $comment->deck->id;
+        if ($this->type == 'blog') {
+            $this->url = 'http://fftcgdb.com/d/' . $comment->post->id;
+        } else {
+            $this->url = 'http://fftcgdb.com/d/' . $comment->deck->id;
+        }
     }
 
     /**
@@ -35,7 +39,9 @@ class Commented extends Mailable
      */
     public function build()
     {
-        if ($this->type == 'direct') {
+        if ($this->type == 'blog') {
+            $heading = "You've had a comment on your blog post!";
+        } elseif ($this->type == 'direct') {
             $heading = "You've had a comment on your deck build!";
         } else {
             $heading = "You were mentioned in a comment!";

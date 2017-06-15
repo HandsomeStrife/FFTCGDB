@@ -266,6 +266,11 @@ h6 .comments-button {
 h4 .like-button {
     margin-left: 10px;
     font-size: 12px; 
+    display: inline;
+}
+.edit-card {
+    float: right;
+    color: #333333;
 }
 .deck-options-menu {
     margin-bottom: 10px;

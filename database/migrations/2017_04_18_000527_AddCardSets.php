@@ -26,7 +26,7 @@ class AddCardSets extends Migration
     public function down()
     {
         Schema::table('cards', function ($table) {
-            $table->string('set_number');
+            $table->dropColumn('set_number');
         });
     }
 }
