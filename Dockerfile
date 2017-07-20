@@ -44,6 +44,7 @@ apt-get clean &&\
 rm -rf /var/www &&\
 mv /tmp/FFTCG /var/www &&\
 ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load &&\
+unlink /etc/apache2/mods-enabled/autoindex.load &&\
 sed -i 's/Options.*/Options FollowSymLinks/g' /etc/apache2/apache2.conf &&\
 sed -i 's/AllowOverride.*/AllowOverride All/g' /etc/apache2/apache2.conf &&\
 composer install -d /var/www &&\
@@ -76,7 +77,5 @@ echo "nameserver 8.8.8.8" >> /etc/resolv.conf &&\
 echo "nameserver 8.8.4.4" >> /etc/resolv.conf &&\
 
 # Forward Apache logs to stdout
-if [[ -f /var/log/apache2/access.log ]]; then rm -rf /var/log/apache2/access.log; fi &&\
-if [[ -f /var/log/apache2/error.log ]]; then rm -rf /var/log/apache2/error.log; fi &&\
 ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 ln -sf /proc/self/fd/1 /var/log/apache2/error.log
