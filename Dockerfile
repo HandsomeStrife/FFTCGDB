@@ -67,6 +67,7 @@ chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2 /
 # Prime database
 mysql -u root -e "CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 */;" &&\
 mysql -u root -D fftcgdb < /var/www/fftcgdb.sql &&\
+(cd /var/www && php artisan migrate) &&\
 
 # Force resolv.conf
 echo "nameserver 172.17.0.1" > /etc/resolv.conf &&\
