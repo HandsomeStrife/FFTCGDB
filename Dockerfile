@@ -56,6 +56,7 @@ sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/g' /var/www/.env &&\
 sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=/g' /var/www/.env &&\
 sed -i 's|/var/www/html|/var/www/public|g' /etc/apache2/sites-enabled/* &&\
 (cd /var/www && php artisan key:generate) &&\
+sed -i 's/.*max_input_vars = .*/max_input_vars = 65534/g' /etc/php/5.6/apache2/php.ini &&\
 
 # Start services
 echo "service networking start && service mysql start && exec /usr/sbin/apache2ctl -D FOREGROUND" > /startup.sh &&\
