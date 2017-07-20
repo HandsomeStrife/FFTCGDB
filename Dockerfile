@@ -73,4 +73,10 @@ mysql -u root -D fftcgdb < /var/www/fftcgdb.sql &&\
 # Force resolv.conf
 echo "nameserver 172.17.0.1" > /etc/resolv.conf &&\
 echo "nameserver 8.8.8.8" >> /etc/resolv.conf &&\
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf
+echo "nameserver 8.8.4.4" >> /etc/resolv.conf &&\
+
+# Forward Apache logs to stdout
+if [[ -f /var/log/apache2/access.log ]]; then rm -rf /var/log/apache2/access.log; fi &&\
+if [[ -f /var/log/apache2/error.log ]]; then rm -rf /var/log/apache2/error.log; fi &&\
+ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
+ln -sf /proc/self/fd/1 /var/log/apache2/error.log
