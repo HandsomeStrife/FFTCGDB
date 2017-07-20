@@ -61,8 +61,8 @@ sed -i 's|/var/www/html|/var/www/public|g' /etc/apache2/sites-enabled/* &&\
 echo "service networking start && service mysql start && exec /usr/sbin/apache2ctl -D FOREGROUND" > /startup.sh &&\
 chmod +x /startup.sh &&\
 service mysql start &&\
-mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www/html &&\
-chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www/html &&\
+mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 &&\
+chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2 /var/www &&\
 
 # Prime database
 mysql -u root -e "CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 */;" &&\
