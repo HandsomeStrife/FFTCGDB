@@ -58,9 +58,11 @@ sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=/g' /var/www/.env &&\
 sed -i 's|/var/www/html|/var/www/public|g' /etc/apache2/sites-enabled/* &&\
 (cd /var/www && php artisan key:generate) &&\
 sed -i 's/.*max_input_vars = .*/max_input_vars = 65534/g' /etc/php/5.6/apache2/php.ini &&\
+echo "log_errors = On" >> /etc/php/5.6/apache2/php.ini &&\
+echo "error_reporting = E_ALL" >> /etc/php/5.6/apache2/php.ini &&\
 
 # Start services
-echo "service networking start && service mysql start && exec service apache2 start && tail -f /dev/null" > /startup.sh &&\
+echo "service networking start && service mysql start && exec apache2ctl -D FOREGROUND" > /startup.sh &&\
 chmod +x /startup.sh &&\
 service mysql start &&\
 mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 &&\
@@ -79,5 +81,5 @@ echo "nameserver 8.8.8.8" >> /etc/resolv.conf &&\
 echo "nameserver 8.8.4.4" >> /etc/resolv.conf &&\
 
 # Forward Apache logs to stdout
-ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
+#ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 ln -sf /proc/self/fd/1 /var/log/apache2/error.log
