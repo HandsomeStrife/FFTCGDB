@@ -60,7 +60,7 @@ sed -i 's|/var/www/html|/var/www/public|g' /etc/apache2/sites-enabled/* &&\
 sed -i 's/.*max_input_vars = .*/max_input_vars = 65534/g' /etc/php/5.6/apache2/php.ini &&\
 
 # Start services
-echo "service networking start && service mysql start && exec /usr/sbin/apache2ctl -D FOREGROUND" > /startup.sh &&\
+echo "service networking start && service mysql start && exec service apache2 start && tail -f /dev/null" > /startup.sh &&\
 chmod +x /startup.sh &&\
 service mysql start &&\
 mkdir -p /var/lock/apache2 /var/run/apache2 /var/log/apache2 &&\
@@ -70,6 +70,8 @@ chown -R www-data:www-data /var/lock/apache2 /var/run/apache2 /var/log/apache2 /
 mysql -u root -e "CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 */;" &&\
 mysql -u root -D fftcgdb < /var/www/fftcgdb.sql &&\
 (cd /var/www && php artisan migrate) &&\
+mysql -u root -D fftcgdb < /var/www/cards.sql &&\
+rm -rf /var/www/*.sql &&\
 
 # Force resolv.conf
 echo "nameserver 172.17.0.1" > /etc/resolv.conf &&\
