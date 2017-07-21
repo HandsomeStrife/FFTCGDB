@@ -129,7 +129,7 @@
                                         </div>
                                         <div class='card-count'>@if ($deck->cards->contains('id', $card->id)) {{ $selected_cards[$card->id]->pivot->count }} @else 0 @endif</div>
                                     </div>
-                                    <div class='card-number'>1-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
+                                    <div class='card-number'>{{$card->set_number}}-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
                                 </div>
 
                                 @section('scripts')

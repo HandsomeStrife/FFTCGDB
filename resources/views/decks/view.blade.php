@@ -105,7 +105,7 @@
                                         </a>
                                         <div class='card-count'>{{ $card->pivot->count }}</div>
                                     </div>
-                                    <div class='card-number'>1-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
+                                    <div class='card-number'>{{$card->set_number}}-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
                                 </div>
                             @empty
                                 <p>There are no cards in this deck :\</p>

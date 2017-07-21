@@ -9,9 +9,9 @@
                 <div class='filters'>
                     <!-- Collected filters -->
                     <div class='button-group' data-filter-group="owned">
-                        <button data-filter="" type="button" class="btn btn-default selected js-default-filter btn-xs js-filter">All (216)</button>
+                        <button data-filter="" type="button" class="btn btn-default selected js-default-filter btn-xs js-filter">All (367)</button>
                         <button data-filter=".card.collected" type="button" class="btn btn-default btn-xs js-filter">Collected (<span class='js-collected-count'>{{ $collected->count() }}</span>)</button>
-                        <button data-filter=".card.not-collected" type="button" class="btn btn-default btn-xs js-filter">Not Collected (<span class='js-not-collected-count'>{{ 216 - $collected->count() }}</span>)</button>
+                        <button data-filter=".card.not-collected" type="button" class="btn btn-default btn-xs js-filter">Not Collected (<span class='js-not-collected-count'>{{ 367 - $collected->count() }}</span>)</button>
                     </div>
                     <!-- Type Filters -->
                     @include('shared.filters.elements')
@@ -60,7 +60,7 @@
                                 <div class='card-count'>@if (!empty($collected[$card->id])) {{$collected[$card->id]->count}} @else 0 @endif</div>
                                 <div title='Mark foil' class='js-foil-toggle foil-card'>@if (!empty($collected[$card->id]) && $collected[$card->id]->foil) F @else NF @endif</div>
                             </div>
-                            <div class='card-number'>1-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
+                            <div class='card-number'>{{$card->set_number}}-{{ str_pad($card->card_number, 3, 0, STR_PAD_LEFT) }}-{{$card->rarity}}</div>
                         </div>
                     @empty
                         <p>No cards in the database, uhoh :\</p>
