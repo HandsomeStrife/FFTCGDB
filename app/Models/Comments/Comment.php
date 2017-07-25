@@ -33,7 +33,7 @@ class Comment extends Model
         if (isset($cards[1])) {
             foreach ($cards[1] as $_c) {
                 $parts = explode('-', $_c);
-                $card = Card::find((int) $parts[1]);
+                $card = Card::where('set_number', $parts[0])->where('card_number', $parts[1])->first();
                 $c = preg_replace('/\(.+?\)\s{0,1}\[' . $card->fullCardNumber() . '\]/', $card->hoveritem(), $c);
             }
         }
