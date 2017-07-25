@@ -34,7 +34,7 @@ for s in "${sets[@]}"; do
     printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "$card_name" "$card_elem" "$card_cost" "$card_type" "$card_job" "$card_cat" "$card_pwr" "$card_rare" "$card_num"
 
     if [[ "$(grep "$stop" .cache)" == "" ]]; then
-      printf "INSERT IGNORE INTO cards (set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW());\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$card_type" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$card_pwr" >> cards.sql
+      printf "INSERT IGNORE INTO cards (set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW());\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$card_pwr" >> cards.sql
     fi
 
     i="$((i+1))"
