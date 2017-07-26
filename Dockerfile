@@ -27,5 +27,7 @@ mysql -u root -e "CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 *
 mysql -u root -D fftcgdb < /var/www/fftcgdb.sql &&\
 (cd /var/www && php artisan migrate) &&\
 mysql -u root -D fftcgdb < /var/www/cards.sql &&\
+mkdir -p /var/www/storage/logs/ &&\
+touch /var/www/storage/logs/laravel.log &&\
 chown -R www-data:www-data /var/www &&\
 rm -rf /var/www/*.sql
