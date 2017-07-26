@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h1 style="margin-top: 0;">{{ $user->name }}</h1>
-                    <p>{{ $user->collected()->count() }} cards of 367 collected.</p>
+                    <p>{{ $user->collected()->count() }} cards of {{ $countall }} collected.</p>
                 </div>
             </div>
         </div>

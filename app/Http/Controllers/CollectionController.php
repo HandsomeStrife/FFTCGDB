@@ -32,14 +32,16 @@ class CollectionController extends Controller
         $cards = Card::all();
         View::share('cards', $cards);
         $collected = Collection::where('user_id', Auth::user()->id)->get()->keyBy('card_id');
+        $countall = Card::get()->count();
         View::share('collected', $collected);
-        return view('collection.indexalt');
+        return view('collection.indexalt', [ 'countall' => $countall ]);
     }
 
     public function profile()
     {
         $collected = Auth::user()->collection->keyBy('card_id');
-        return view('collection.profile', [ 'cards' => Card::all(), 'collected' => $collected ]);
+        $countall = Card::get()->count();
+        return view('collection.profile', [ 'cards' => Card::all(), 'collected' => $collected, 'countall' => $countall ]);
     }
 
     public function update(Request $request)
