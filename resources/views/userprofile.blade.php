@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h1>{{ $user->name }}</h1>
-                    <p>{{ $cards->count() }} cards of 367 collected.</p>
+                    <p>{{ $cards->count() }} cards of {{ $countall }} collected.</p>
                 </div>
                 <div class="panel-body">
                     @if (isset($cards))
