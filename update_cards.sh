@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-url="http://fftcgdb.com/card"
+url="http://192.168.59.104/card"
 stop="Whoops! You found an error."
 sets=("1" "2" "3" "pr")
 
@@ -8,8 +8,8 @@ if [[ -f 'cards.sql' ]]; then
   rm 'cards.sql'
 fi
 
-#echo "delete from cards;" > cards.sql
-#echo "ALTER TABLE cards AUTO_INCREMENT = 1" >> cards.sql
+echo "delete from cards;" > cards.sql
+echo "ALTER TABLE cards AUTO_INCREMENT = 1" >> cards.sql
 
 printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "NAME" "ELEMENT" "COST" "TYPE" "JOB" "CATEGORY" "POWER" "RARITY" "NUMBER"
 for s in "${sets[@]}"; do
@@ -17,7 +17,7 @@ for s in "${sets[@]}"; do
     rm '.cache'
   fi
 
-  echo "" > .cache
+  touch .cache
   i="1"
   while [[ "$(grep "$stop" .cache)" == "" ]]; do
     curl "$url/$s-$i" 2>/dev/null > .cache
@@ -32,6 +32,10 @@ for s in "${sets[@]}"; do
     card_rare="$(echo $card_num | sed -e 's/.*-//g')"
     card_text="$(grep -A 1 ">Card Text<" .cache | grep -v ">Card Text<" | sed -e 's/.*<td><p>//g' -e 's/<\/p><\/td>.*//g' -e "s/&#039;/'/g")"
     printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "$card_name" "$card_elem" "$card_cost" "$card_type" "$card_job" "$card_cat" "$card_pwr" "$card_rare" "$card_num"
+
+    if [[ "$card_cost" == "" ]]; then
+      card_cost="0"
+    fi
 
     if [[ "$(grep "$stop" .cache)" == "" ]]; then
       if echo "$card_type" | grep -qi "forward"; then
