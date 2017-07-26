@@ -6,8 +6,8 @@ This is the repo for code on [fftcgdb.com](fftcgdb.com) - it uses [Laravel](http
   - Artisan, Laravel's CLI-based debugging toolkit: https://laravel.com/docs/5.3/artisan
   - Blade, Laravel's View templating engine: https://laravel.com/docs/5.3/blade
   - Eloquent, Laravel's SQL query generator framework: https://laravel.com/docs/5.3/eloquent
-
-#### Building the Development Docker Image
+-----
+### Building the Development Docker Image
 For development purposes, FFTCGDB can be deployed into a Docker container. The final container image is built on top of a LAMP base layer designed to support Laravel 5.3.
 #### Building the LAMP Base Layer
 The FFTCGDB repository contains two Docker build files. The LAMP base layer is referenced by the application layer, and is built using the following Docker command:
