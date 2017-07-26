@@ -34,7 +34,11 @@ for s in "${sets[@]}"; do
     printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "$card_name" "$card_elem" "$card_cost" "$card_type" "$card_job" "$card_cat" "$card_pwr" "$card_rare" "$card_num"
 
     if [[ "$(grep "$stop" .cache)" == "" ]]; then
-      printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$card_pwr" "$i" "$s" >> cards.sql
+      if echo "$card_type" | grep -qi "forward"; then
+        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$card_pwr" "$i" "$s" >> cards.sql
+      else
+        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$i" "$s" >> cards.sql
+      fi
     fi
 
     i="$((i+1))"
