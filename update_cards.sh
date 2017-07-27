@@ -24,7 +24,7 @@ fi
 # Purge all old Card table entries, thus replacing them with our new ones. Only do this if we're cleaning
 if [[ "$type" == "clean" ]]; then
   echo "delete from cards;" > cards.sql
-  echo "ALTER TABLE cards AUTO_INCREMENT = 1" >> cards.sql
+  echo "ALTER TABLE cards AUTO_INCREMENT = 1;" >> cards.sql
 fi
 
 # Header for our imminent dump of card data to stdout.
