@@ -7,16 +7,25 @@ url="http://192.168.59.104/card"
 stop="Whoops! You found an error."
 # Sets - What sets (Opuses) of cards we want to retrieve.
 sets=("1" "2" "3" "pr")
+# Type - 'clean' is drop all table contents and make from scratch; 'sync' is just update existing cards in the table.
+type="$(echo "$1" | awk '{print tolower($0)}')"
 ###
+
+# Default to the less destructive option
+if [ "$type" != "clean" ] && [ "$type" != "sync" ]; then
+    type="sync"
+fi
 
 # Housekeeping
 if [[ -f 'cards.sql' ]]; then
   rm 'cards.sql'
 fi
 
-# Purge all old Card table entries, thus replacing them with our new ones. Comment these lines out if you're looking to append, not replace
-#echo "delete from cards;" > cards.sql
-#echo "ALTER TABLE cards AUTO_INCREMENT = 1" >> cards.sql
+# Purge all old Card table entries, thus replacing them with our new ones. Only do this if we're cleaning
+if [[ "$type" == "clean" ]]; then
+  echo "delete from cards;" > cards.sql
+  echo "ALTER TABLE cards AUTO_INCREMENT = 1" >> cards.sql
+fi
 
 # Header for our imminent dump of card data to stdout.
 printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "NAME" "ELEMENT" "COST" "TYPE" "JOB" "CATEGORY" "POWER" "RARITY" "NUMBER"
@@ -67,14 +76,20 @@ for s in "${sets[@]}"; do
 
     # Make sure we don't mistake an error page for a card when making database entries
     if [[ "$(grep "$stop" .cache)" == "" ]]; then
-      if echo "$card_type" | grep -qi "forward"; then
-        # This is a conditional insert - it will only insert the card if one with the same set number and card number is not found in the database.
-#        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$card_pwr" "$(printf "%03d", "$i")" "$s" >> cards.sql
-         printf "UPDATE cards SET name = '%s', cost = '%s', element = '%s', type = '%s', job = '%s', category = '%s', text = '%s', rarity = '%s', power ='%s', updated_at = NOW() where set_number = '%s' and TRIM(LEADING '0' FROM card_number) = '%s' limit 1;\n" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$card_rare" "$card_pwr" "$s" "$i" >> cards.sql
+      if [[ "$type" == "clean" ]]; then
+        if echo "$card_type" | grep -qi "forward"; then
+          # This is a conditional insert - it will only insert the card if one with the same set number and card number is not found in the database.
+          printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$card_pwr" "$(printf "%03d", "$i")" "$s" >> cards.sql
+        else
+          # If the card we retrieved is not a forward, omit the 'power' value. Otherwise SQL will complain we aren't providing an integer.
+          printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$(printf "%03d", "$i")" "$s" >> cards.sql
+        fi
       else
-        # If the card we retrieved is not a forward, omit the 'power' value. Otherwise SQL will complain we aren't providing an integer.
-#        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$(printf "%03d", "$i")" "$s" >> cards.sql
-         printf "UPDATE cards SET name = '%s', cost = '%s', element = '%s', type = '%s', job = '%s', category = '%s', text = '%s', rarity = '%s', updated_at = NOW() where set_number = '%s' and TRIM(LEADING '0' FROM card_number) = '%s' limit 1;\n" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$card_rare" "$s" "$i" >> cards.sql
+        if echo "$card_type" | grep -qi "forward"; then
+          printf "UPDATE cards SET name = '%s', cost = '%s', element = '%s', type = '%s', job = '%s', category = '%s', text = '%s', rarity = '%s', power ='%s', updated_at = NOW() where set_number = '%s' and TRIM(LEADING '0' FROM card_number) = '%s' limit 1;\n" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$card_rare" "$card_pwr" "$s" "$i" >> cards.sql
+        else
+          printf "UPDATE cards SET name = '%s', cost = '%s', element = '%s', type = '%s', job = '%s', category = '%s', text = '%s', rarity = '%s', updated_at = NOW() where set_number = '%s' and TRIM(LEADING '0' FROM card_number) = '%s' limit 1;\n" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$card_rare" "$s" "$i" >> cards.sql
+        fi
       fi
     fi
 
