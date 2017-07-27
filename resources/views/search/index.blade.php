@@ -129,7 +129,7 @@
                                 <option value="xii">Final Fantasy XII (XII)</option>
                                 <option value="xiii">Final Fantasy XIII (XIII)</option>
                                 <option value="xiv">Final Fantasy XIV (XIV)</option>
-                                <option value"type-0">Final Fantasy Type-0 (TYPE-0)</option>
+                                <option value="type-0">Final Fantasy Type-0 (TYPE-0)</option>
                                 <option value="fft">Final Fantasy Tactics (FFT)</option>
                                 <option value="dff">Dissidia Final Fantasy (DFF)</option>
                                 <option value="lov">Lord of Vermilion (LOV)</option>
