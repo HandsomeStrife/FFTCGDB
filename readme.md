@@ -28,7 +28,7 @@ Note that termination of the Apache service will result in the container being s
 The FFTCGDB application code is designed to run on the Laravel 5.3 CMS framework. To create a functional instance of the code for testing during development, perform the following steps:
 
  1. First, ensure you have successfully built the lamp_base layer mentioned in the above section.
- 2. *OPTIONAL:* Run the 'update_cards.sh' shellscript (will work on any *nix-based OS) to ensure your development instance's Card table is in sync with production
+ 2. *OPTIONAL:* Run the `bin/update_cards.sh clean` shellscript (will work on any *nix-based OS) to ensure your development instance's Card table is in sync with production
  3. Build the Application layer Docker image with the following command:
 
  >`docker build -t fftcg:latest .`

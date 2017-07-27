@@ -12,7 +12,7 @@ type="$(echo "$1" | awk '{print tolower($0)}')"
 ###
 
 # Default to the less destructive option
-if [ "$type" != "clean" ] && [ "$type" != "sync" ]; then
+if [ "$type" != "clean" ]; then
     type="sync"
 fi
 
@@ -52,7 +52,9 @@ for s in "${sets[@]}"; do
     card_num="$(grep -A 1 ">Card Number<" .cache | grep -v ">Card Number<" | sed -e 's/.*<td>//g' -e 's/<\/td>.*//g')"
     card_rare="$(echo $card_num | sed -e 's/.*-//g')"
     card_text="$(grep -A 1 ">Card Text<" .cache | grep -v ">Card Text<" | sed -e 's/.*<td><p>//g' -e 's/<\/p><\/td>.*//g' -e "s/&#039;/'/g")"
-    printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "$card_name" "$card_elem" "$card_cost" "$card_type" "$card_job" "$card_cat" "$card_pwr" "$card_rare" "$card_num"
+    if [[ "$(grep "$stop" .cache)" == "" ]]; then
+      printf '%-30s%-20s%-20s%-20s%-30s%-20s%-20s%-20s%-20s\n' "$card_name" "$card_elem" "$card_cost" "$card_type" "$card_job" "$card_cat" "$card_pwr" "$card_rare" "$card_num"
+    fi
 
     # The database wants an integer for card_power, so ensure it gets one.
     if [[ "$card_cost" == "" ]]; then
