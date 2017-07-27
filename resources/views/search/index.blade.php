@@ -121,7 +121,6 @@
                                 <option value="iv">Final Fantasy IV (IV)</option>
                                 <option value="v">Final Fantasy V (V)</option>
                                 <option value="vi">Final Fantasy VI (VI)</option>
-                                <option value="fft">Final Fantasy Tactics (FFT)</option>
                                 <option value="vii">Final Fantasy VII (VII)</option>
                                 <option value="viii">Final Fantasy VIII (VIII)</option>
                                 <option value="ix">Final Fantasy IX (IX)</option>
@@ -131,7 +130,9 @@
                                 <option value="xiii">Final Fantasy XIII (XIII)</option>
                                 <option value="xiv">Final Fantasy XIV (XIV)</option>
                                 <option value"type-0">Final Fantasy Type-0 (TYPE-0)</option>
+                                <option value="fft">Final Fantasy Tactics (FFT)</option>
                                 <option value="dff">Dissidia Final Fantasy (DFF)</option>
+                                <option value="lov">Lord of Vermilion (LOV)</option>
                                 <option value="woff">World of Final Fantasy (WOFF)</option>
                             </select>
                         </div>
