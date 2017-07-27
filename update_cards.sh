@@ -50,14 +50,29 @@ for s in "${sets[@]}"; do
       card_cost="0"
     fi
 
+    # Replace tags with markup in text we pulled to keep things clean
+    card_text="$(echo "$card_text" | sed -e 's|<img class="small-icon" src="/img/icons/special.png" />|[s]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/dull.png" />|[dull]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/fire.png" />|[fire]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/ice.png" />|[ice]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/air.png" />|[air]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/earth.png" />|[earth]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/lightning.png" />|[lightning]|g' \
+                                         -e 's|<img class="small-icon" src="/img/icons/water.png" />|[water]|g' \
+                                         -e 's|<span class="fa-stack fa-1x"><i class="fa fa-circle-thin fa-stack-1x"></i><span class="fa-stack-1x">1</span></span>|[1]|g' \
+                                         -e 's|<span class="fa-stack fa-1x"><i class="fa fa-circle-thin fa-stack-1x"></i><span class="fa-stack-1x">2</span></span>|[2]|g' \
+                                         -e 's|<span class="fa-stack fa-1x"><i class="fa fa-circle-thin fa-stack-1x"></i><span class="fa-stack-1x">3</span></span>|[3]|g' \
+                                         -e 's|<b>||g' \
+                                         -e 's|</b>||g')"
+
     # Make sure we don't mistake an error page for a card when making database entries
     if [[ "$(grep "$stop" .cache)" == "" ]]; then
       if echo "$card_type" | grep -qi "forward"; then
         # This is a conditional insert - it will only insert the card if one with the same set number and card number is not found in the database.
-        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$card_pwr" "$i" "$s" >> cards.sql
+        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, power, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$card_pwr" "$(printf "%03d", "$i")" "$s" >> cards.sql
       else
         # If the card we retrieved is not a forward, omit the 'power' value. Otherwise SQL will complain we aren't providing an integer.
-        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$i" "$card_rare" "$i" "$s" >> cards.sql
+        printf "INSERT INTO cards ( set_number, name, cost, element, type, job, category, text, card_number, rarity, created_at, updated_at ) select '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', NOW(), NOW() from DUAL where not exists ( select id from cards where card_number = '%s' and set_number = '%s' limit 1 );\n" "$s" "$(echo $card_name | sed -e "s/'/\\\'/g")" "$card_cost" "$(echo "$card_elem" | awk '{print tolower($0)}')" "$(echo "$card_type" | awk '{print tolower($0)}')" "$(echo $card_job | sed -e "s/'/\\\'/g")" "$card_cat" "$(echo $card_text | sed -e "s/'/\\\'/g")" "$(printf "%03d", "$i")" "$card_rare" "$(printf "%03d", "$i")" "$s" >> cards.sql
       fi
     fi
 
