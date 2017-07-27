@@ -69,6 +69,14 @@ class SearchController extends Controller
                 }
             });
         }
+        if ($request->input('sets')) {
+            $has_queries = true;
+            $card->where(function ($query) use ($request) {
+                foreach ($request->input('sets') as $t) {
+                    $query->orWhere('set_number', $t);
+                }
+            });
+        }
 
         if ($has_queries) {
             return response()->json($card->get());

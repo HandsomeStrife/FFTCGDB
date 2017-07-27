@@ -121,7 +121,6 @@
                                 <option value="iv">Final Fantasy IV (IV)</option>
                                 <option value="v">Final Fantasy V (V)</option>
                                 <option value="vi">Final Fantasy VI (VI)</option>
-                                <option value="fft">Final Fantasy Tactics (FFT)</option>
                                 <option value="vii">Final Fantasy VII (VII)</option>
                                 <option value="viii">Final Fantasy VIII (VIII)</option>
                                 <option value="ix">Final Fantasy IX (IX)</option>
@@ -130,7 +129,10 @@
                                 <option value="xii">Final Fantasy XII (XII)</option>
                                 <option value="xiii">Final Fantasy XIII (XIII)</option>
                                 <option value="xiv">Final Fantasy XIV (XIV)</option>
+                                <option value="type-0">Final Fantasy Type-0 (TYPE-0)</option>
+                                <option value="fft">Final Fantasy Tactics (FFT)</option>
                                 <option value="dff">Dissidia Final Fantasy (DFF)</option>
+                                <option value="lov">Lord of Vermilion (LOV)</option>
                                 <option value="woff">World of Final Fantasy (WOFF)</option>
                             </select>
                         </div>
@@ -157,6 +159,29 @@
                                     <button type="button" class="btn btn-default btn-sm">
                                         Freeze
                                         <input type="checkbox" name="traits[]" value="freeze"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sets-filter" class="form-group">
+                            <label>Sets</label>
+                            <div class="input-group">
+                                <div class='btn-group filter-toggle-select'>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        Opus 1
+                                        <input type="checkbox" name="sets[]" value="1"/>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        Opus II
+                                        <input type="checkbox" name="sets[]" value="2"/>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        Opus III
+                                        <input type="checkbox" name="sets[]" value="3"/>
+                                    </button>
+                                    <button type="button" class="btn btn-default btn-sm">
+                                        Promo
+                                        <input type="checkbox" name="sets[]" value="pr"/>
                                     </button>
                                 </div>
                             </div>
