@@ -168,7 +168,7 @@
                             <div class="input-group">
                                 <div class='btn-group filter-toggle-select'>
                                     <button type="button" class="btn btn-default btn-sm">
-                                        Opus 1
+                                        Opus I
                                         <input type="checkbox" name="sets[]" value="1"/>
                                     </button>
                                     <button type="button" class="btn btn-default btn-sm">
