@@ -189,6 +189,12 @@ class DeckController extends Controller
         return redirect()->action('DeckController@view', ['deck_id' => $deck_id]);
     }
 
+    public function delComment(Request $request, $deck_id, $comment_id)
+    {
+	DB::table('deck_comments')->where('id', $comment_id)->update(['deleted_at' => DB::raw('now()')]);
+        return redirect()->action('DeckController@view', ['deck_id' => $deck_id]);
+    }
+
     private function fetchDeck($deck_id)
     {
         if (!Auth::check()) {
