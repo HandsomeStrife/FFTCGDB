@@ -217,6 +217,18 @@ h4 .element-filters {
     display: block;
 }
 
+.del-comment {
+  color: #D31010;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+del-comment:focus {
+  outline: none;
+}
+
 .tooltip-hover {
     position: absolute;
     display: none;
