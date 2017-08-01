@@ -52,6 +52,7 @@ Route::post('/json', 'SearchController@json');
 $decks = function () {
     Route::post('/like', 'DeckController@likeToggle');
     Route::post('/{deck_id}/comment', 'DeckController@addComment');
+    Route::post('/{deck_id}/comment/del/{comment_id}', 'DeckController@delComment');
     Route::post('/u/{deck_id}/edit', 'DeckController@processEdit')->middleware('auth');
     Route::post('/u/{deck_id}/delete', 'DeckController@processDelete')->middleware('auth');
     Route::post('/', 'DeckController@search');
