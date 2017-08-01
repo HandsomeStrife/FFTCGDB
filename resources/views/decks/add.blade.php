@@ -157,16 +157,6 @@
                                             count_updated($card, -1);
                                         });
 
-					var $form = $('
-
-				        $('.filter-toggle-select .btn').click(function(evt) {
-				            evt.stopPropagation(); evt.preventDefault();
-				            $(this).toggleClass("selected");
- 				            var chkbx = $(this).find('input');
-    				            chkbx.prop("checked", !chkbx.prop("checked"));
-            				    $form.trigger('doupdate');
-        				});
-
                                         var $form = $('#deckbuilder-form');
                                         var $template = $('#js-template');
                                         
