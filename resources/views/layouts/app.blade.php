@@ -97,7 +97,8 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ url('/profile') }}">Profile</a></li>
+                                    <li><a href="{{ url('/u/'. Auth::user()->username) }}">View Profile</a></li>
+                                    <li><a href="{{ url('/profile') }}">Edit Profile</a></li>
                                     <li><a href="{{ url('/messages') }}">Messages</a></li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
