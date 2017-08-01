@@ -95,12 +95,13 @@
                     <div class="panel panel-default">
                         <div class="panel-heading deckbuilder-filters">
                             @include('shared.filters.name')
+                            @include('shared.filters.collected')
                             @include('shared.filters.elements')
                             <div class='clearfix'></div>
                         </div>
                         <div class="panel-body isotope">
                             @forelse ($allcards as $card)
-                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-set-number="{{ $card->set_number }}" data-element="{{ $card->element }}">
+                                <div class='card element-{{ $card->element }} @if ($collected->contains('card_id', $card->id)) collected @endif' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-set-number="{{ $card->set_number }}" data-element="{{ $card->element }}">
                                     <div class='card-image'>
                                         <img class="lazy img" data-original="/img/cards/100x140/{{ $card->set_number }}/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                         <div class='actions'>
@@ -155,6 +156,16 @@
                                             var card_id = $card.attr('data-card-id');
                                             count_updated($card, -1);
                                         });
+
+					var $form = $('
+
+				        $('.filter-toggle-select .btn').click(function(evt) {
+				            evt.stopPropagation(); evt.preventDefault();
+				            $(this).toggleClass("selected");
+ 				            var chkbx = $(this).find('input');
+    				            chkbx.prop("checked", !chkbx.prop("checked"));
+            				    $form.trigger('doupdate');
+        				});
 
                                         var $form = $('#deckbuilder-form');
                                         var $template = $('#js-template');
