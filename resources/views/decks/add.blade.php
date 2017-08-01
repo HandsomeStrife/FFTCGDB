@@ -95,12 +95,13 @@
                     <div class="panel panel-default">
                         <div class="panel-heading deckbuilder-filters">
                             @include('shared.filters.name')
+                            @include('shared.filters.collected')
                             @include('shared.filters.elements')
                             <div class='clearfix'></div>
                         </div>
                         <div class="panel-body isotope">
                             @forelse ($allcards as $card)
-                                <div class='card element-{{ $card->element }}' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-set-number="{{ $card->set_number }}" data-element="{{ $card->element }}">
+                                <div class='card element-{{ $card->element }} @if ($collected->contains('card_id', $card->id)) collected @endif' data-card-id="{{ $card->id }}" data-title="{{ $card->name }}" data-type="{{ $card->type }}" data-number="{{ $card->card_number }}" data-set-number="{{ $card->set_number }}" data-element="{{ $card->element }}">
                                     <div class='card-image'>
                                         <img class="lazy img" data-original="/img/cards/100x140/{{ $card->set_number }}/{{ $card->card_number }}.png" width="100" height="140" src=""/>
                                         <div class='actions'>
@@ -135,7 +136,7 @@
                                 @section('scripts')
                                 <script id="js-template" type="text/plain">
                                     <input class="js-card-%card_id%" type="hidden" name="card[%card_id%]" value="%count%"/>
-                                    <li class="js-card-%card_id%">
+                                    <li class="js-card-%card_id% img-instead">
                                         <img src="/img/icons/%element%.png"/>
                                         <a class='js-view-full' href="/img/cards/original/%set_number%/%card_number%.png">%title%</a> (<span>%count%</span>)
                                     </li>

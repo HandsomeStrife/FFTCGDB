@@ -136,6 +136,21 @@ $(document).ready(function() {
         // combine filters
         var filterValue = concatValues( filters );
         $grid.isotope({ filter: filterValue });
+        console.log(filterValue);
+    });
+
+    $('.js-mine-filter').click(function() {
+        var $this = $(this);
+        if (filters['mine'] == '.collected') {
+            delete(filters['mine']);
+            $(this).removeClass('selected');
+        } else {
+            filters['mine'] = '.collected';
+            $(this).addClass('selected');
+        }
+        var filterValue = concatValues( filters );
+        $grid.isotope({ filter: filterValue });
+        console.log(filterValue);
     });
 
     $('.js-name-filter').keyup(function() {
