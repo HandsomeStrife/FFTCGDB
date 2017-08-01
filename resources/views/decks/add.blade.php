@@ -136,7 +136,7 @@
                                 @section('scripts')
                                 <script id="js-template" type="text/plain">
                                     <input class="js-card-%card_id%" type="hidden" name="card[%card_id%]" value="%count%"/>
-                                    <li class="js-card-%card_id%">
+                                    <li class="js-card-%card_id% img-instead">
                                         <img src="/img/icons/%element%.png"/>
                                         <a class='js-view-full' href="/img/cards/original/%set_number%/%card_number%.png">%title%</a> (<span>%count%</span>)
                                     </li>
