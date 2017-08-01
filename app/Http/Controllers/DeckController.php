@@ -105,7 +105,7 @@ class DeckController extends Controller
     {
         $deck = $this->fetchDeck($deck_id);
         $all_cards = Card::all();
-	$collected = Auth::user()->collection->keyBy('card_id');
+	    $collected = Auth::user()->collection->keyBy('card_id');
         $selected_cards = $deck->cards->keyBy('id');
         return view('decks.add', ['deck' => $deck, 'allcards' => $all_cards, 'selected_cards' => $selected_cards, 'collected' => $collected]);
     }
@@ -113,9 +113,12 @@ class DeckController extends Controller
     public function processDelete(Request $request, $deck_id)
     {
         $deck = $this->fetchDeck($deck_id);
-        $deck->delete();
-
-        flash("Deleted deck", 'success');
+        if ($deck) {
+            $deck->delete();
+            flash("Deleted deck", 'success');
+        } else {
+            flash("Unable to delete deck - deck ID doesn't exist", 'error');
+        }
 
         return redirect()->action('DeckController@index');
     }
