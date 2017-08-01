@@ -79,18 +79,3 @@
     </div>
 </div>
 @endsection
-
-@section('scripts')
-<script id="js-search-item-render" type="text/text">
-    <a class='js-hover-info'
-        data-id="%id%"
-        data-element="%element%"
-        data-cost="%cost%"
-        data-number="%full_number%"
-        data-title="%name%"
-        target="_blank"
-        href="/card/%full_number%">
-            <img src="/img/cards/100x140/%set_number%/%number%.png">
-    </a>
-</script>
-@endsection
