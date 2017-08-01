@@ -142,7 +142,7 @@
     <script src="//cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js" type="text/javascript"></script>
     <script src="/js/jquery-canvas-sparkles.min.js" type="text/javascript"></script>
     <script src="/js/delay.min.js" type="text/javascript"></script>
-    <script src="/js/main.js?v=6" type="text/javascript"></script>
+    <script src="/js/main.js?v=8" type="text/javascript"></script>
     @yield('scripts')
 
     <script>
