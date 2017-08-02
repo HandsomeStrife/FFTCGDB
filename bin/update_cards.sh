@@ -2,7 +2,7 @@
 
 ### Setting default values.
 # URL - the target to query for scraping cards out of
-url="http://192.168.59.104/card"
+url="http://fftcgdb.com/card"
 # Stop - what message to search for that would signify we've asked for a non-existant card
 stop="Whoops! You found an error."
 # Sets - What sets (Opuses) of cards we want to retrieve.
