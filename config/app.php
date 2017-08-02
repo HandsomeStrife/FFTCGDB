@@ -180,8 +180,8 @@ return [
         Webpatser\Countries\CountriesServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
-	Collective\Html\HtmlServiceProvider::class,
-	Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class
+      	Collective\Html\HtmlServiceProvider::class,
+	      Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class
 
     ],
 
