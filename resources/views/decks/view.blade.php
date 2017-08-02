@@ -113,7 +113,6 @@
                         </div>
                     </div>
                 </div>
-
                 @if (!Auth::check())
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -141,7 +140,18 @@
                                 {!! $comment->format() !!}
                             </div>
                             <div class="panel-footer">
-                                <p>{{ $comment->created_at->diffForHumans() }} by <a href="/u/{{ $comment->user->username }}">{{ $comment->user->username }}</a></p>
+            				@if ($comment->user_id == Auth::id() || $deck->user_id == Auth::id() || Auth::user()->admin)
+                                <form id="delcomment" method="post" action="{{ action('DeckController@delComment', ['comment_id' => $comment->id, 'deck_id' => $deck->id]) }}">
+                        	    	{{ csrf_field() }}
+                                	<p>
+                                        <button type="submit" class="del-comment pull-left">Delete</button>
+                                        {{ $comment->created_at->diffForHumans() }} by <a href="/u/{{ $comment->user->username }}">{{ $comment->user->username }}</a>
+                                    </p>
+                            	</form>
+				            @else
+	                            <p>{{ $comment->created_at->diffForHumans() }} by <a href="/u/{{ $comment->user->username }}">{{ $comment->user->username }}</a>
+					            </p>
+				            @endif
                             </div>
                         </div>
                     @empty
@@ -217,6 +227,13 @@
                 $('.js-to-comments').click(function() {
                     $(window).scrollTo('#deck-comment-section', 800);
                 });
+            });
+
+            $('#delcomment').on('submit', function(event) {
+                if (!confirm("Are you sure you wish to delete this comment?")) {
+                    event.preventDefault ? event.preventDefault() : (event.returnValue = false);
+                    return false;
+                }
             });
         </script>
         @endsection

@@ -105,8 +105,9 @@ class DeckController extends Controller
     {
         $deck = $this->fetchDeck($deck_id);
         $all_cards = Card::all();
+	$collected = Auth::user()->collection->keyBy('card_id');
         $selected_cards = $deck->cards->keyBy('id');
-        return view('decks.add', ['deck' => $deck, 'allcards' => $all_cards, 'selected_cards' => $selected_cards]);
+        return view('decks.add', ['deck' => $deck, 'allcards' => $all_cards, 'selected_cards' => $selected_cards, 'collected' => $collected]);
     }
 
     public function processDelete(Request $request, $deck_id)
@@ -186,6 +187,12 @@ class DeckController extends Controller
                 flash("Please enter a comment", "danger");
             }
         }
+        return redirect()->action('DeckController@view', ['deck_id' => $deck_id]);
+    }
+
+    public function delComment(Request $request, $deck_id, $comment_id)
+    {
+	DB::table('deck_comments')->where('id', $comment_id)->update(['deleted_at' => DB::raw('now()')]);
         return redirect()->action('DeckController@view', ['deck_id' => $deck_id]);
     }
 

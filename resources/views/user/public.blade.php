@@ -55,9 +55,11 @@
                             @foreach ($user->collected() as $collect)
                                 <div class='card collected element-{{ $collect->card->element }}' data-card-id="{{ $collect->card->id }}">
                                     <div class='card-image @if ($collect->foil_count > 0) has-foil @else no-foil @endif'>
-                                        <img class="lazy img" data-original="/img/cards/100x140/{{ $collect->card->set_number }}/{{ $collect->card->card_number }}.png" width="100" height="140" src=""/>
-                                        <div title='Regular' class='card-count'>{{ $collect->count }}</div>
-                                        <div title='Foil' class='foil-card'>@if ($collect->foil_count > 0) {{ $collect->foil_count }} @else 0 @endif</div>
+                                        <a class='js-view-full' href="/img/cards/original/{{ $collect->card->set_number }}/{{ $collect->card->card_number }}.png">
+                                            <img class="lazy img" data-original="/img/cards/100x140/{{ $collect->card->set_number }}/{{ $collect->card->card_number }}.png" width="100" height="140" src=""/>
+                                            <div title='Regular' class='card-count'>{{ $collect->count }}</div>
+                                            <div title='Foil' class='foil-card'>@if ($collect->foil_count > 0) {{ $collect->foil_count }} @else 0 @endif</div>
+                                        </a>
                                     </div>
                                     <div class='card-number'>{{ $collect->card->fullCardNumber() }}</div>
                                 </div>
