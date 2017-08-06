@@ -1,5 +1,5 @@
-FROM lamp_base:latest
-MAINTAINER Nick Fraker <nickdontspam@gmail.com
+FROM ikaruwa/lamp_base:latest
+MAINTAINER Nick Fraker <nickdontspam@gmail.com>
 
 # Add files
 COPY . /tmp/FFTCG
@@ -22,12 +22,14 @@ echo "log_errors = On" >> /etc/php/5.6/apache2/php.ini &&\
 echo "error_reporting = E_ALL" >> /etc/php/5.6/apache2/php.ini &&\
 
 # Prime database
+find /var/lib/mysql -type f -exec touch {} \; &&\
 service mysql start &&\
-mysql -u root -e "CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 */;" &&\
+mysql -u root -e "UPDATE mysql.user SET Host='%'; FLUSH PRIVILEGES; CREATE DATABASE fftcgdb /*\!40100 DEFAULT CHARACTER SET utf8 */;" &&\
 mysql -u root -D fftcgdb < /var/www/fftcgdb.sql &&\
 (cd /var/www && php artisan migrate) &&\
 mysql -u root -D fftcgdb < /var/www/cards.sql &&\
 mkdir -p /var/www/storage/logs/ &&\
 touch /var/www/storage/logs/laravel.log &&\
 chown -R www-data:www-data /var/www &&\
+find /var/lib/mysql -type f -exec touch {} \; &&\
 rm -rf /var/www/*.sql
