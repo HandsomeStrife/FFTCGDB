@@ -11,7 +11,7 @@
                     <div class='button-group' data-filter-group="owned">
                         <button data-filter="" type="button" class="btn btn-default selected js-default-filter btn-xs js-filter">All ({{ $countall }})</button>
                         <button data-filter=".card.collected" type="button" class="btn btn-default btn-xs js-filter">Collected (<span class='js-collected-count'>{{ $collected->count() }}</span>)</button>
-                        <button data-filter=".card.not-collected" type="button" class="btn btn-default btn-xs js-filter">Not Collected (<span class='js-not-collected-count'>{{ $countall - $collected->count() }}</span>)</button>
+                        <button data-filter=".card.not-collected" type="button" class="btn btn-default btn-xs js-filter">Not Collected (<span class='js-not-collected-count'>{{ $countall - $collected()->count() }}</span>)</button>
                     </div>
                     <!-- Type Filters -->
                     @include('shared.filters.elements')

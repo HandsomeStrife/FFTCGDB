@@ -31,7 +31,7 @@ class CollectionController extends Controller
     {
         $cards = Card::all();
         View::share('cards', $cards);
-        $collected = Auth::user()->collected->keyBy('card_id');
+        $collected = Auth::user()->collected()->keyBy('card_id');
         $countall = Card::get()->count();
         View::share('collected', $collected);
         return view('collection.indexalt', [ 'countall' => $countall ]);
@@ -39,7 +39,7 @@ class CollectionController extends Controller
 
     public function profile()
     {
-        $collected = Auth::user()->collected->keyBy('card_id');
+        $collected = Auth::user()->collected()->keyBy('card_id');
         $countall = Card::get()->count();
         return view('collection.profile', [ 'cards' => Card::all(), 'collected' => $collected, 'countall' => $countall ]);
     }

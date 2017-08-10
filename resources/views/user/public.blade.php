@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h1 style="margin-top: 0;">{{ $user->name }}</h1>
-                    <p>{{ $user->collected->count() }} cards of {{ $countall }} collected.</p>
+                    <p>{{ $collection->count() }} cards of {{ $countall }} collected.</p>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="panel-body">
                     <ul class='card-list'>
-                        @forelse ($user->fortrade as $collect)
+                        @forelse ($user->fortrade() as $collect)
                             @include('shared.carditem')
                         @empty
                             <p>No cards for trade</p>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="panel-body">
                     <ul class='card-list'>
-                        @forelse ($user->wanted as $collect)
+                        @forelse ($user->wanted() as $collect)
                             @include('shared.carditemwant')
                         @empty
                             <p>No cards wanted</p>
@@ -49,10 +49,10 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @if ($user->collected->count() > 0)
+                    @if ($collection->count() > 0)
                         <h4>Collection @include('shared.filters.elements')</h4>
                         <div class='isotope'>
-                            @foreach ($user->collected as $collect)
+                            @foreach ($user->collected() as $collect)
                                 <div class='card collected element-{{ $collect->card->element }}' data-card-id="{{ $collect->card->id }}">
                                     <div class='card-image @if ($collect->foil_count > 0) has-foil @else no-foil @endif'>
                                         <a class='js-view-full' href="/img/cards/original/{{ $collect->card->set_number }}/{{ $collect->card->card_number }}.png">

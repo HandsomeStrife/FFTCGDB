@@ -55,17 +55,18 @@ class UserController extends Controller
             return redirect()->action('HomeController@index');
         }
 
-        $user = User::where('username', $username)->first();
+        $user = Auth::user();
         if (!$user) {
             $altuser = User::where('name', $username)->first();
             return view('errors.404', ['username' => $username, 'altuser' => $altuser]);
         }
 
         $countall = Card::get()->count();
+	$collection = $user->collection();
         $decks = Deck::where('user_id', $user->id)
                         ->where('public', true)
                         ->orderBy('created_at', 'DESC')->get();
 
-        return view('user.public', ['user' => $user, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks', 'countall' => $countall]);
+        return view('user.public', ['user' => $user, 'collection' => $collection, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks', 'countall' => $countall]);
     }
 }
