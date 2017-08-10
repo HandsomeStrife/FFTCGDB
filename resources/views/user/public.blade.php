@@ -49,7 +49,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    @if ($collection->count() > 0)
+                    @if ($user->collected()->count() > 0)
                         <h4>Collection @include('shared.filters.elements')</h4>
                         <div class='isotope'>
                             @foreach ($user->collected() as $collect)
