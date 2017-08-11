@@ -55,7 +55,7 @@ class UserController extends Controller
             return redirect()->action('HomeController@index');
         }
 
-        $user = User::where('username', $username)->first();
+	$user = User::where('username', $username)->first();
         if (!$user) {
             $altuser = User::where('name', $username)->first();
             return view('errors.404', ['username' => $username, 'altuser' => $altuser]);
