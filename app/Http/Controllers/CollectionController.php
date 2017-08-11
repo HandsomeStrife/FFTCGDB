@@ -31,7 +31,7 @@ class CollectionController extends Controller
     {
         $cards = Card::all();
         View::share('cards', $cards);
-        $collected = Collection::where('user_id', Auth::user()->id)->get()->keyBy('card_id');
+        $collected = Auth::user()->collected()->keyBy('card_id');
         $countall = Card::get()->count();
         View::share('collected', $collected);
         return view('collection.indexalt', [ 'countall' => $countall ]);
@@ -39,7 +39,7 @@ class CollectionController extends Controller
 
     public function profile()
     {
-        $collected = Auth::user()->collection->keyBy('card_id');
+        $collected = Auth::user()->collected()->keyBy('card_id');
         $countall = Card::get()->count();
         return view('collection.profile', [ 'cards' => Card::all(), 'collected' => $collected, 'countall' => $countall ]);
     }
@@ -47,7 +47,7 @@ class CollectionController extends Controller
     public function update(Request $request)
     {
         $user_id = Auth::user()->id;
-        $existing = Collection::where('user_id', $user_id)->get();
+        $existing = Auth::user()->collection->keyBy('card_id');
         $cards = $request->input('card');
         foreach ($cards as $card_id => $c) {
             $e = $existing->filter(function ($item) use ($card_id) {
@@ -68,8 +68,11 @@ class CollectionController extends Controller
             // Wanted
             $e->wanted = (empty($c['wanted'])) ? 0 : $c['wanted'];
             $e->foil_wanted = (empty($c['foil_wanted'])) ? 0 : $c['foil_wanted'];
-
-            $e->save();
+	    if (($e->count == 0) && ($e->foil_count == 0) && ($e->trade_count == 0) && ($e->foil_trade_count == 0) && ($e->wanted == 0) && ($e->foil_wanted == 0)) {
+		$e->forceDelete();
+	    } else {
+            	$e->save();
+	    }
         }
 
         if (!$request->ajax()) {

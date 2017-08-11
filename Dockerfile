@@ -1,5 +1,12 @@
 FROM ikaruwa/lamp_base:latest
-MAINTAINER Nick Fraker <nickdontspam@gmail.com>
+LABEL name="fftcgdb"
+LABEL version="1.0.0"
+LABEL release="0"
+LABEL vendor="Nick Fraker <nickdontspam@gmail.com>"
+LABEL vcs-type="git"
+LABEL vcs-url="https://github.com/danives/fftcgdb"
+LABEL authoritative-source-url="https://hub.docker.com/r/ikaruwa/fftcgdb"
+LABEL distribution-scope="public"
 
 # Add files
 COPY . /tmp/FFTCG
