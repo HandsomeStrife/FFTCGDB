@@ -181,7 +181,7 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
       	Collective\Html\HtmlServiceProvider::class,
-	    Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class
+	      Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class
 
     ],
 
