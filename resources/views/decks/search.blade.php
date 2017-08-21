@@ -17,35 +17,35 @@
                                 <div class='btn-group filter-toggle-select'>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="fire"/>
-                                        <img src="/img/icons/fire.png" />
+                                        <img src="/img/icons/fire.png" data-title="fire" title="fire"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="ice"/>
-                                        <img src="/img/icons/ice.png" />
+                                        <img src="/img/icons/ice.png" data-title="ice" title="ice"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="wind"/>
-                                        <img src="/img/icons/wind.png" />
+                                        <img src="/img/icons/wind.png" data-title="wind" title="wind"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="earth"/>
-                                        <img src="/img/icons/earth.png" />
+                                        <img src="/img/icons/earth.png" data-title="earth" title="earth"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="lightning"/>
-                                        <img src="/img/icons/lightning.png" />
+                                        <img src="/img/icons/lightning.png" data-title="lightning" title="lightning"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="water"/>
-                                        <img src="/img/icons/water.png" />
+                                        <img src="/img/icons/water.png" data-title="water" title="water"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="light"/>
-                                        <img src="/img/icons/light.png" />
+                                        <img src="/img/icons/light.png" data-title="light" title="light"/>
                                     </label>
                                     <label class='btn'>
                                         <input type="checkbox" name="elements[]" value="dark"/>
-                                        <img src="/img/icons/dark.png" />
+                                        <img src="/img/icons/dark.png" data-title="dark" title="dark"/>
                                     </label>
                                 </div>
                             </div>
