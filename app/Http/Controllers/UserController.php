@@ -62,10 +62,11 @@ class UserController extends Controller
         }
 
         $countall = Card::get()->count();
+        $collection = $user->collection();
         $decks = Deck::where('user_id', $user->id)
                         ->where('public', true)
                         ->orderBy('created_at', 'DESC')->get();
 
-        return view('user.public', ['user' => $user, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks', 'countall' => $countall]);
+        return view('user.public', ['user' => $user, 'collection' => $collection, 'public_decks' => $decks, 'public_deck_title' => 'Users Public Decks', 'countall' => $countall]);
     }
 }
